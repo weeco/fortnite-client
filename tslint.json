@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+      "tslint:recommended",
+      "tslint-microsoft-contrib"
+  ],
+  "jsRules": {},
+  "rules": {
+    "no-relative-imports": false,
+    "no-implicit-dependencies": [true, "dev"],
+    "export-name": false,
+    "missing-jsdoc": false,
+    "await-promise": [true, "RequestPromise"],
+    "completed-docs": false
+  },
+  "rulesDirectory": []
+}
