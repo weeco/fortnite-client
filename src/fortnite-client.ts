@@ -68,26 +68,32 @@ export class FortniteClient {
 
   public async login(): Promise<void> {
     this.launcherAccessToken = await this.requestAccessToken();
-    setTimeout(this.onTokenExpired, this.launcherAccessToken.expiresIn - 15);
+    setTimeout(
+      () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
+      this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
+    );
 
     const oAuthExchange: OAuthExchange = await this.requestOAuthExchange(this.launcherAccessToken);
     const clientAccessToken: AccessToken = await this.requestOAuthToken(oAuthExchange.code);
     this.updateClientAccessToken(clientAccessToken);
-    setTimeout(this.onTokenExpired, this.clientAccessToken.expiresIn - 15);
+    setTimeout(
+      () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
+      this.clientAccessToken.expiresIn * 1000 - 15 * 1000
+    );
   }
 
   // TODO: Fix this endpoint
-  public async getPveStats(accountId: string): Promise<void> {
-    const targetUrl: string = FortniteURLHelper.GET_PVE_URL(accountId);
-    const params: {} = { profileId: 'profile0', rvn: -1 };
-    const pveStatsResponse: RequestResponse = await this.apiRequest({
-      url: targetUrl,
-      qs: params,
-      method: 'POST'
-    });
+  // public async getPveStats(accountId: string): Promise<void> {
+  //   const targetUrl: string = FortniteURLHelper.GET_PVE_URL(accountId);
+  //   const params: {} = { profileId: 'profile0', rvn: -1 };
+  //   const pveStatsResponse: RequestResponse = await this.apiRequest({
+  //     url: targetUrl,
+  //     qs: params,
+  //     method: 'POST'
+  //   });
 
-    return;
-  }
+  //   return;
+  // }
 
   public async getBattleRoyaleStatsById(userId: string): Promise<PlayerStats> {
     const playerStats: RequestResponse = await this.apiRequest({
@@ -139,7 +145,7 @@ export class FortniteClient {
     });
   }
 
-  private onTokenExpired = async (token: AccessToken, secretKey: string): Promise<void> => {
+  private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
       case this.credentials.clientToken:
@@ -154,7 +160,7 @@ export class FortniteClient {
         throw new Error('Expired token could not be identified by comparing the secret key');
     }
 
-    setTimeout(this.onTokenExpired, refreshedToken.expiresIn - 15);
+    setTimeout(() => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
   }
 
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
