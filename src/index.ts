@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import 'reflect-metadata';
 import { FortniteClient } from './fortnite-client';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
-import { Status } from './models/status/status';
+// import { Status } from './models/status/status';
 
 config();
 const credentials: IFortniteClientCredentials = {
@@ -14,7 +14,7 @@ const credentials: IFortniteClientCredentials = {
 };
 
 async function bootstrap(): Promise<void> {
-  const status: Status = await FortniteClient.CHECK_STATUS();
+  //const status: Status = await FortniteClient.CHECK_STATUS();
 
   const api: FortniteClient = new FortniteClient(credentials);
   await api.login();
