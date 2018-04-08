@@ -69,7 +69,7 @@ export class FortniteClient {
   public async login(): Promise<void> {
     this.launcherAccessToken = await this.requestAccessToken();
     setTimeout(
-      () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
+      async () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
       this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
     );
 
@@ -77,7 +77,7 @@ export class FortniteClient {
     const clientAccessToken: AccessToken = await this.requestOAuthToken(oAuthExchange.code);
     this.updateClientAccessToken(clientAccessToken);
     setTimeout(
-      () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
+      async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
     );
   }
@@ -160,7 +160,7 @@ export class FortniteClient {
         throw new Error('Expired token could not be identified by comparing the secret key');
     }
 
-    setTimeout(() => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
+    setTimeout(async () => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
   }
 
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
