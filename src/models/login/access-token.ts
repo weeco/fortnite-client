@@ -1,4 +1,4 @@
-import { Expose, plainToClass, Type } from 'class-transformer';
+import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
 import { Perm } from './perm';
 
 export class AccessToken {
@@ -51,5 +51,9 @@ export class AccessToken {
 
   public static FROM_JSON(jsonObject: {}): AccessToken {
     return plainToClass(AccessToken, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(AccessToken);
   }
 }

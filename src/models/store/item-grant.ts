@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { classToPlain, plainToClass, Type } from 'class-transformer';
 import { Attributes } from './attributes';
 
 export class ItemGrant {
@@ -10,5 +10,9 @@ export class ItemGrant {
 
   public static FROM_JSON(jsonObject: {}): ItemGrant {
     return plainToClass(ItemGrant, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(ItemGrant);
   }
 }

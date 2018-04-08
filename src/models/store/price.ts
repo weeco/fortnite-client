@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class Price {
   public currencyType: CurrencyType;
@@ -11,6 +11,10 @@ export class Price {
 
   public static FROM_JSON(jsonObject: {}): Price {
     return plainToClass(Price, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(Price);
   }
 }
 

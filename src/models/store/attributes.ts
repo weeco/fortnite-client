@@ -1,4 +1,4 @@
-import { Expose, plainToClass, Type } from 'class-transformer';
+import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
 import { Alteration } from './alteration';
 
 export class Attributes {
@@ -8,5 +8,9 @@ export class Attributes {
 
   public static FROM_JSON(jsonObject: {}): Attributes {
     return plainToClass(Attributes, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(Attributes);
   }
 }

@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class GiftInfo {
   public bIsEnabled: boolean;
@@ -8,5 +8,9 @@ export class GiftInfo {
 
   public static FROM_JSON(jsonObject: {}): GiftInfo {
     return plainToClass(GiftInfo, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(GiftInfo);
   }
 }

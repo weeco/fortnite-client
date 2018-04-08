@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class Lookup {
   public id: string;
@@ -6,5 +6,9 @@ export class Lookup {
 
   public static FROM_JSON(jsonObject: {}): Lookup {
     return plainToClass(Lookup, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(Lookup);
   }
 }

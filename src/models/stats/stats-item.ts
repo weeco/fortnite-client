@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class StatsItem {
   public name: string;
@@ -8,6 +8,10 @@ export class StatsItem {
 
   public static FROM_JSON(jsonObject: {}): StatsItem {
     return plainToClass(StatsItem, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(StatsItem);
   }
 }
 

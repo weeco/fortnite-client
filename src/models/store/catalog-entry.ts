@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { classToPlain, plainToClass, Type } from 'class-transformer';
 import { GiftInfo } from './gift-info';
 import { ItemGrant } from './item-grant';
 import { MetaAssetInfo } from './meta-asset-info';
@@ -47,6 +47,10 @@ export class CatalogEntry {
 
   public static FROM_JSON(jsonObject: {}): CatalogEntry {
     return plainToClass(CatalogEntry, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(CatalogEntry);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Expose, plainToClass, Type } from 'class-transformer';
+import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
 import { Loginmessage } from './loginmessage';
 import { News } from './news';
 
@@ -30,5 +30,9 @@ export class Athenamessage {
 
   public static FROM_JSON(jsonObject: {}): Athenamessage {
     return plainToClass(Athenamessage, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(Athenamessage);
   }
 }

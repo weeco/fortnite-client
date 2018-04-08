@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class MetaInfo {
   public key: Key;
@@ -6,6 +6,10 @@ export class MetaInfo {
 
   public static FROM_JSON(jsonObject: {}): MetaInfo {
     return plainToClass(MetaInfo, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(MetaInfo);
   }
 }
 
