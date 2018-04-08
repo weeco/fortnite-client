@@ -1,10 +1,10 @@
 import { plainToClass, Type } from 'class-transformer';
 import { GiftInfo } from './gift-info';
+import { ItemGrant } from './item-grant';
+import { MetaAssetInfo } from './meta-asset-info';
 import { MetaInfo } from './meta-info';
 import { Price } from './price';
 import { Requirement } from './requirement';
-import { ItemGrant } from './item-grant';
-import { MetaAssetInfo } from './meta-asset-info';
 
 export class CatalogEntry {
   public offerId: string;

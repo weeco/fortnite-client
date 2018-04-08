@@ -4,7 +4,6 @@ import { PlatformMessage } from './platform-message';
 
 export class News {
   @Expose({ name: 'platform_messages' })
-
   @Expose({ name: 'platform_messages' })
   @Type(() => PlatformMessage)
   public platformMessages?: PlatformMessage[];
