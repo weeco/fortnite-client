@@ -10,10 +10,10 @@
           "name": "Index",
           "runtimeArgs": [
               "-r",
-              "${workspaceRoot}\\node_modules\\ts-node\\register"
+              "${workspaceRoot}/node_modules/ts-node/register"
           ],
           "args": [
-              "${workspaceRoot}\\src\\index.ts"
+              "${workspaceRoot}/src/index.ts"
           ],
           "outputCapture": "std"
       }
