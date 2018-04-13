@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "REST client for Fortnite",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json --format stylish src/**/*.ts",
     "format": "prettier --write \"**/*.ts\"",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "prepublishOnly": "npm run format && npm run lint"
   },
   "repository": {
     "type": "git",
