@@ -13,6 +13,6 @@ export class ItemGrant {
   }
 
   public toJson(): {} {
-    return classToPlain(ItemGrant);
+    return classToPlain(this);
   }
 }

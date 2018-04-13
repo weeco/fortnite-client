@@ -12,7 +12,7 @@ export class MetaAssetInfo {
   }
 
   public toJson(): {} {
-    return classToPlain(MetaAssetInfo);
+    return classToPlain(this);
   }
 }
 

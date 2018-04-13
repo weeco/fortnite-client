@@ -10,6 +10,6 @@ export class LauncherInfo {
   }
 
   public toJson(): {} {
-    return classToPlain(LauncherInfo);
+    return classToPlain(this);
   }
 }

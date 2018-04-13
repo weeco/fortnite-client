@@ -54,6 +54,6 @@ export class AccessToken {
   }
 
   public toJson(): {} {
-    return classToPlain(AccessToken);
+    return classToPlain(this);
   }
 }

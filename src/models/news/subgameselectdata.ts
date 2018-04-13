@@ -34,6 +34,6 @@ export class Subgameselectdata {
   }
 
   public toJson(): {} {
-    return classToPlain(Subgameselectdata);
+    return classToPlain(this);
   }
 }

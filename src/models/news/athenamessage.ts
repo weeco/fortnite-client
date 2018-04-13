@@ -33,6 +33,6 @@ export class Athenamessage {
   }
 
   public toJson(): {} {
-    return classToPlain(Athenamessage);
+    return classToPlain(this);
   }
 }

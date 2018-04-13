@@ -10,7 +10,7 @@ export class PlayerStats {
   }
 
   public toJson(): {} {
-    return classToPlain(PlayerStats);
+    return classToPlain(this);
   }
 }
 

@@ -11,6 +11,6 @@ export class GiftInfo {
   }
 
   public toJson(): {} {
-    return classToPlain(GiftInfo);
+    return classToPlain(this);
   }
 }

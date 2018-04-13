@@ -12,6 +12,6 @@ export class Alteration {
   }
 
   public toJson(): {} {
-    return classToPlain(Alteration);
+    return classToPlain(this);
   }
 }

@@ -12,7 +12,7 @@ export class Message {
   }
 
   public toJson(): {} {
-    return classToPlain(Message);
+    return classToPlain(this);
   }
 }
 

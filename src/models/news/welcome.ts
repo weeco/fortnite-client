@@ -47,6 +47,6 @@ export class Welcome {
   }
 
   public toJson(): {} {
-    return classToPlain(Welcome);
+    return classToPlain(this);
   }
 }

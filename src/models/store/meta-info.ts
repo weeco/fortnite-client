@@ -9,7 +9,7 @@ export class MetaInfo {
   }
 
   public toJson(): {} {
-    return classToPlain(MetaInfo);
+    return classToPlain(this);
   }
 }
 

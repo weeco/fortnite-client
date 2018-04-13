@@ -9,6 +9,6 @@ export class Payload {
   }
 
   public toJson(): {} {
-    return classToPlain(Payload);
+    return classToPlain(this);
   }
 }

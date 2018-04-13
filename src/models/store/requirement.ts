@@ -10,7 +10,7 @@ export class Requirement {
   }
 
   public toJson(): {} {
-    return classToPlain(Requirement);
+    return classToPlain(this);
   }
 }
 

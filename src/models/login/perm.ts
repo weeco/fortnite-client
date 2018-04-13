@@ -9,6 +9,6 @@ export class Perm {
   }
 
   public toJson(): {} {
-    return classToPlain(Perm);
+    return classToPlain(this);
   }
 }

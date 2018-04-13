@@ -12,6 +12,6 @@ export class Storefront {
   }
 
   public toJson(): {} {
-    return classToPlain(Storefront);
+    return classToPlain(this);
   }
 }

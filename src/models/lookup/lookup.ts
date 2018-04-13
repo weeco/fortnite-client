@@ -9,6 +9,6 @@ export class Lookup {
   }
 
   public toJson(): {} {
-    return classToPlain(Lookup);
+    return classToPlain(this);
   }
 }

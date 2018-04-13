@@ -18,6 +18,6 @@ export class Status {
   }
 
   public toJson(): {} {
-    return classToPlain(Status);
+    return classToPlain(this);
   }
 }

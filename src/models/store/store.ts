@@ -14,6 +14,6 @@ export class Store {
   }
 
   public toJson(): {} {
-    return classToPlain(Store);
+    return classToPlain(this);
   }
 }

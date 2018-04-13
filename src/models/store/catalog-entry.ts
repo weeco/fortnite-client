@@ -50,7 +50,7 @@ export class CatalogEntry {
   }
 
   public toJson(): {} {
-    return classToPlain(CatalogEntry);
+    return classToPlain(this);
   }
 }
 

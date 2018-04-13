@@ -10,6 +10,6 @@ export class OAuthExchange {
   }
 
   public toJson(): {} {
-    return classToPlain(OAuthExchange);
+    return classToPlain(this);
   }
 }

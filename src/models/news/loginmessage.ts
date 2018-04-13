@@ -13,6 +13,6 @@ export class Loginmessage {
   }
 
   public toJson(): {} {
-    return classToPlain(Loginmessage);
+    return classToPlain(this);
   }
 }

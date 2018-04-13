@@ -13,6 +13,6 @@ export class PlatformMessage {
   }
 
   public toJson(): {} {
-    return classToPlain(PlatformMessage);
+    return classToPlain(this);
   }
 }

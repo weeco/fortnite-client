@@ -11,7 +11,7 @@ export class StatsItem {
   }
 
   public toJson(): {} {
-    return classToPlain(StatsItem);
+    return classToPlain(this);
   }
 }
 

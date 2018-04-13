@@ -11,6 +11,6 @@ export class Attributes {
   }
 
   public toJson(): {} {
-    return classToPlain(Attributes);
+    return classToPlain(this);
   }
 }

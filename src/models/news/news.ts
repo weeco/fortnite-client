@@ -19,6 +19,6 @@ export class News {
   }
 
   public toJson(): {} {
-    return classToPlain(News);
+    return classToPlain(this);
   }
 }
