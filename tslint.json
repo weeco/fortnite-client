@@ -11,7 +11,8 @@
     "export-name": false,
     "missing-jsdoc": false,
     "await-promise": [true, "RequestPromise"],
-    "completed-docs": false
+    "completed-docs": false,
+    "quotemark": [true, "single", "avoid-escape"]
   },
   "rulesDirectory": []
 }

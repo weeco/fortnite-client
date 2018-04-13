@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class Requirement {
   public requirementType: RequirementType;
@@ -7,6 +7,10 @@ export class Requirement {
 
   public static FROM_JSON(jsonObject: {}): Requirement {
     return plainToClass(Requirement, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }
 

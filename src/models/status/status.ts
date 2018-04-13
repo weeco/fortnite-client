@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { classToPlain, plainToClass, Type } from 'class-transformer';
 import { LauncherInfo } from './launcher-info';
 
 export class Status {
@@ -15,5 +15,9 @@ export class Status {
 
   public static FROM_JSON(jsonObject: {}): Status {
     return plainToClass(Status, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }

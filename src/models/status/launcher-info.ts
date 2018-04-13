@@ -1,4 +1,4 @@
-import { plainToClass } from 'class-transformer';
+import { classToPlain, plainToClass } from 'class-transformer';
 
 export class LauncherInfo {
   public appName: string;
@@ -7,5 +7,9 @@ export class LauncherInfo {
 
   public static FROM_JSON(jsonObject: {}): LauncherInfo {
     return plainToClass(LauncherInfo, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }

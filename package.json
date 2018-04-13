@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "REST client for Fortnite",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "clean:windows": "if exist lib rmdir /s /q lib",
     "lint": "tslint --project tsconfig.json --format stylish src/**/*.ts",
     "format": "prettier --write \"**/*.ts\"",
-    "test": "mocha -r ts-node/register src/**/*.spec.ts"
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "prepublishOnly": "npm run clean:windows && npm run format && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,9 @@
   },
   "homepage": "https://github.com/weeco/fortnite-client#readme",
   "devDependencies": {
+    "@types/chai": "^4.1.2",
     "@types/dotenv": "^4.0.2",
+    "@types/mocha": "^5.0.0",
     "@types/node": "^8.10.1",
     "@types/request": "^2.47.0",
     "@types/request-promise-native": "^1.0.14",

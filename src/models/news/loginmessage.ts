@@ -1,4 +1,4 @@
-import { Expose, plainToClass, Type } from 'class-transformer';
+import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
 import { Message } from './message';
 
 export class Loginmessage {
@@ -10,5 +10,9 @@ export class Loginmessage {
 
   public static FROM_JSON(jsonObject: {}): Loginmessage {
     return plainToClass(Loginmessage, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }

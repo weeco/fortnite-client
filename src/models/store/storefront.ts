@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { classToPlain, plainToClass, Type } from 'class-transformer';
 import { CatalogEntry } from './catalog-entry';
 
 export class Storefront {
@@ -9,5 +9,9 @@ export class Storefront {
 
   public static FROM_JSON(jsonObject: {}): Storefront {
     return plainToClass(Storefront, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }

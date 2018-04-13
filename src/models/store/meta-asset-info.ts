@@ -1,4 +1,4 @@
-import { plainToClass, Type } from 'class-transformer';
+import { classToPlain, plainToClass, Type } from 'class-transformer';
 import { Payload } from './payload';
 
 export class MetaAssetInfo {
@@ -9,6 +9,10 @@ export class MetaAssetInfo {
 
   public static FROM_JSON(jsonObject: {}): MetaAssetInfo {
     return plainToClass(MetaAssetInfo, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }
 

@@ -1,4 +1,4 @@
-import { Expose, plainToClass } from 'class-transformer';
+import { classToPlain, Expose, plainToClass } from 'class-transformer';
 
 export class Alteration {
   @Expose({ name: 'LootTierGroup' })
@@ -9,5 +9,9 @@ export class Alteration {
 
   public static FROM_JSON(jsonObject: {}): Alteration {
     return plainToClass(Alteration, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }

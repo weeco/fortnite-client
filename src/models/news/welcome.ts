@@ -1,4 +1,4 @@
-import { Expose, plainToClass, Type } from 'class-transformer';
+import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
 import { Athenamessage } from './athenamessage';
 import { Subgameselectdata } from './subgameselectdata';
 
@@ -44,5 +44,9 @@ export class Welcome {
 
   public static FROM_JSON(jsonObject: {}): Welcome {
     return plainToClass(Welcome, jsonObject);
+  }
+
+  public toJson(): {} {
+    return classToPlain(this);
   }
 }
