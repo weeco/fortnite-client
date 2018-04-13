@@ -42,20 +42,21 @@ export class FortniteClient {
   }
 
   public static async CHECK_STATUS(): Promise<Status> {
-    const statusResponse: RequestResponse = await request.get({
+    const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.serviceStatus,
       timeout: 5 * 1000,
       json: true,
       resolveWithFullResponse: true
     });
+    const statusResponseBody: {}[] = <{}[]>statusResponse.body;
 
-    return Status.FROM_JSON(statusResponse.body[0]);
+    return Status.FROM_JSON(statusResponseBody[0]);
   }
 
   public static async GET_GAME_NEWS(countryCode: string = 'US'): Promise<Welcome> {
     const jar: CookieJar = request.jar();
     jar.setCookie('epicCountry', countryCode);
-    const statusResponse: RequestResponse = await request.get({
+    const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.gameNews,
       timeout: 5 * 1000,
       json: true,
@@ -63,7 +64,7 @@ export class FortniteClient {
       jar
     });
 
-    return Welcome.FROM_JSON(statusResponse.body);
+    return Welcome.FROM_JSON(<{}>statusResponse.body);
   }
 
   public async login(): Promise<void> {
@@ -83,39 +84,27 @@ export class FortniteClient {
     await this.killOtherSessions();
   }
 
-  // TODO: Fix this endpoint
-  // public async getPveStats(accountId: string): Promise<void> {
-  //   const targetUrl: string = FortniteURLHelper.GET_PVE_URL(accountId);
-  //   const params: {} = { profileId: 'profile0', rvn: -1 };
-  //   const pveStatsResponse: RequestResponse = await this.apiRequest({
-  //     url: targetUrl,
-  //     qs: params,
-  //     method: 'POST'
-  //   });
-
-  //   return;
-  // }
-
   public async getBattleRoyaleStatsById(userId: string): Promise<PlayerStats> {
-    const playerStats: RequestResponse = await this.apiRequest({
+    const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId)
     });
+    const playerStatsBody: {}[] = <{}[]>playerStats.body;
     const preparedObject: IPlayerStats = {
-      stats: playerStats.body
+      stats: playerStatsBody
     };
 
     return PlayerStats.FROM_JSON(preparedObject);
   }
 
   public async getStore(locale: string = 'en-US'): Promise<Store> {
-    const storeResponse: RequestResponse = await this.apiRequest({
+    const storeResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.store,
       headers: {
         'X-EpicGames-Language': locale
       }
     });
 
-    return Store.FROM_JSON(storeResponse.body);
+    return Store.FROM_JSON(<{}>storeResponse.body);
   }
 
   /**
@@ -125,12 +114,12 @@ export class FortniteClient {
   public async lookup(username: string): Promise<Lookup> {
     const targetUrl: string = FortniteURLHelper.lookup;
     const params: {} = { q: username };
-    const lookupResponse: RequestResponse = await this.apiRequest({
+    const lookupResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: targetUrl,
       qs: params
     });
 
-    return Lookup.FROM_JSON(lookupResponse.body);
+    return Lookup.FROM_JSON(<{}>lookupResponse.body);
   }
 
   /**
@@ -164,6 +153,9 @@ export class FortniteClient {
     setTimeout(async () => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
   }
 
+  /**
+   * Required to send right after successful login, when logging in frequently
+   */
   private async killOtherSessions(): Promise<void> {
     await this.apiRequest({
       url: FortniteURLHelper.killOtherSessions,
@@ -178,7 +170,7 @@ export class FortniteClient {
       refresh_token: token.refreshToken,
       includePerms: true
     };
-    const refreshTokenResponse: RequestResponse = await this.apiRequest({
+    const refreshTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.oAuthToken,
       headers: {
         Authorization: `basic ${secretKey}`
@@ -187,7 +179,7 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(refreshTokenResponse.body);
+    return AccessToken.FROM_JSON(<{}>refreshTokenResponse.body);
   }
 
   private async requestOAuthToken(authCode: string): Promise<AccessToken> {
@@ -197,7 +189,7 @@ export class FortniteClient {
       includePerms: true,
       token_type: 'eg1'
     };
-    const oAuthTokenResponse: RequestResponse = await this.apiRequest({
+    const oAuthTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.oAuthToken,
       headers: {
         Authorization: `basic ${this.credentials.clientToken}`
@@ -206,17 +198,20 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(oAuthTokenResponse.body);
+    return AccessToken.FROM_JSON(<{}>oAuthTokenResponse.body);
   }
 
   private async requestOAuthExchange(accessToken: AccessToken): Promise<OAuthExchange> {
-    const oAuthExchangeResponse: RequestResponse = await this.apiRequest(FortniteURLHelper.oAuthExchange, {
-      headers: {
-        Authorization: `bearer ${accessToken.accessToken}`
+    const oAuthExchangeResponse: RequestResponse = <RequestResponse>await this.apiRequest(
+      FortniteURLHelper.oAuthExchange,
+      {
+        headers: {
+          Authorization: `bearer ${accessToken.accessToken}`
+        }
       }
-    });
+    );
 
-    return OAuthExchange.FROM_JSON(oAuthExchangeResponse.body);
+    return OAuthExchange.FROM_JSON(<{}>oAuthExchangeResponse.body);
   }
 
   /**
@@ -229,7 +224,7 @@ export class FortniteClient {
       password: this.credentials.password,
       includePerms: true
     };
-    const accessTokenResponse: RequestResponse = await this.apiRequest(FortniteURLHelper.oAuthToken, {
+    const accessTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest(FortniteURLHelper.oAuthToken, {
       form: requestTokenConfig,
       headers: {
         Authorization: `basic ${this.credentials.clientLauncherToken}`
@@ -237,7 +232,7 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(accessTokenResponse.body);
+    return AccessToken.FROM_JSON(<{}>accessTokenResponse.body);
   }
 }
 
