@@ -22,18 +22,15 @@ export class FortniteClient {
 
   constructor(credentials: IFortniteClientCredentials, options?: IFortniteClientOptions) {
     const defaultOptions: IFortniteClientOptions = {
-      debug: false,
-      timeoutMs: 5 * 1000
+      timeoutMs: 5 * 1000,
+      proxy: null
     };
     const fullOptions: IFortniteClientOptions = { ...defaultOptions, ...options };
 
     this.apiRequest = request.defaults({
       method: 'GET',
       timeout: fullOptions.timeoutMs,
-      proxy: {
-        host: '127.0.0.1',
-        port: 8888
-      },
+      proxy: fullOptions.proxy,
       rejectUnauthorized: false,
       json: true,
       resolveWithFullResponse: true
