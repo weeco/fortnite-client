@@ -6,10 +6,11 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "clean:windows": "if exist lib rmdir /s /q lib",
     "lint": "tslint --project tsconfig.json --format stylish src/**/*.ts",
     "format": "prettier --write \"**/*.ts\"",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "prepublishOnly": "npm run format && npm run lint"
+    "prepublishOnly": "npm run clean:windows && npm run format && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
