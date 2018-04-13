@@ -80,6 +80,7 @@ export class FortniteClient {
       async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
     );
+    await this.killOtherSessions();
   }
 
   // TODO: Fix this endpoint
@@ -161,6 +162,14 @@ export class FortniteClient {
     }
 
     setTimeout(async () => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
+  }
+
+  private async killOtherSessions(): Promise<void> {
+    await this.apiRequest({
+      url: FortniteURLHelper.killOtherSessions,
+      form: { killType: 'OTHERS_ACCOUNT_CLIENT_SERVICE' },
+      method: 'DELETE'
+    });
   }
 
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {

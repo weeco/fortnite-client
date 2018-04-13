@@ -16,6 +16,9 @@ export class FortniteURLHelper {
   public static serviceStatus: string = `${FortniteURLHelper.lightSwitchUrl}/service/bulk/status?serviceId=Fortnite`;
   public static lookup: string = `${FortniteURLHelper.personaApi}/public/account/lookup`;
   public static store: string = `${FortniteURLHelper.storeFrontV2}/catalog`;
+  public static killOtherSessions: string = `${
+    FortniteURLHelper.accountPublicUrl
+  }/oauth/sessions/kill?killType=OTHERS_ACCOUNT_CLIENT_SERVICE`;
 
   // Account related properties
   private inAppId: string;

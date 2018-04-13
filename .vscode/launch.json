@@ -16,6 +16,23 @@
               "${workspaceRoot}/src/index.ts"
           ],
           "outputCapture": "std"
+      },
+
+      {
+        "name": "Current Test File",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+        "args": [
+          "--timeout", "999999",
+          "--colors",
+          "-r",
+          "ts-node/register",
+          "${relativeFile}"
+        ],
+        "cwd": "${workspaceRoot}",
+        "protocol": "inspector",
+        "outputCapture": "std"
       }
   ]
 }
