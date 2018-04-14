@@ -10,7 +10,7 @@
     "lint": "tslint --project tsconfig.json --format stylish src/**/*.ts",
     "format": "prettier --write \"**/*.ts\"",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "prepublishOnly": "npm run clean:windows && npm run format && npm run lint && npm run build"
+    "prepublishOnly": "npm run clean:windows && npm run build"
   },
   "repository": {
     "type": "git",

@@ -18,7 +18,7 @@ export * from './models/lookup/lookup';
 // -------------------------------------------------------------------------
 // Commonly used interfaces
 // -------------------------------------------------------------------------
-export * from './interfaces/client-options.interface';
+export * from './interfaces/fortnite-client-options.interface';
 export * from './interfaces/fortnite-client-credentials.interface';
 
 // -------------------------------------------------------------------------
