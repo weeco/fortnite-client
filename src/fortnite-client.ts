@@ -1,7 +1,7 @@
 import { CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
-import { IFortniteClientOptions } from './interfaces/client-options.interface';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
+import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
 import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
 import { Lookup } from './models/lookup/lookup';
@@ -20,6 +20,11 @@ export class FortniteClient {
   private launcherAccessToken: AccessToken;
   private clientAccessToken: AccessToken;
 
+  /**
+   * Creates a new fortnite client instance.
+   * @param credentials The account's credentials which shall be used for the REST requests.
+   * @param options Library specific options (such as a response timeout until it throws an exception).
+   */
   constructor(credentials: IFortniteClientCredentials, options?: IFortniteClientOptions) {
     const defaultOptions: IFortniteClientOptions = {
       timeoutMs: 5 * 1000,
