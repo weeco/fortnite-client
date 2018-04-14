@@ -24,3 +24,7 @@ Jakefile.js
 test.config
 package-lock.json
 yarn.lock
+.env
+.env.example
+.prettierrc
+tsconfig.json
