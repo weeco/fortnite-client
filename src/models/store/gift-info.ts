@@ -6,10 +6,12 @@ export class GiftInfo {
   public purchaseRequirements: string[];
   public giftRecordIds?: string[];
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): GiftInfo {
     return plainToClass(GiftInfo, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

@@ -8,6 +8,7 @@ export class MetaInfo {
     return plainToClass(MetaInfo, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

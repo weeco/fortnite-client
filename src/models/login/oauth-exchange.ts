@@ -9,6 +9,7 @@ export class OAuthExchange {
     return plainToClass(OAuthExchange, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

@@ -8,10 +8,12 @@ export class PlatformMessage {
   public message: Message;
   public platform: string;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): PlatformMessage {
     return plainToClass(PlatformMessage, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

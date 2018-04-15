@@ -49,6 +49,7 @@ export class CatalogEntry {
     return plainToClass(CatalogEntry, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

@@ -10,13 +10,14 @@ export class Status {
   public allowedActions: string[];
   public banned: boolean;
 
-  @Type(() => LauncherInfo)
+  @Type(/* istanbul ignore next */ () => LauncherInfo)
   public launcherInfo: LauncherInfo;
 
   public static FROM_JSON(jsonObject: {}): Status {
     return plainToClass(Status, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

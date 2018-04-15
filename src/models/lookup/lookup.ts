@@ -8,6 +8,7 @@ export class Lookup {
     return plainToClass(Lookup, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

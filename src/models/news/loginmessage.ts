@@ -8,10 +8,12 @@ export class Loginmessage {
   @Type(() => Message)
   public message: Message;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): Loginmessage {
     return plainToClass(Loginmessage, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

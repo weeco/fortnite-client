@@ -33,6 +33,7 @@ export class Subgameselectdata {
     return plainToClass(Subgameselectdata, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

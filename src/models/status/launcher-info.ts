@@ -5,10 +5,12 @@ export class LauncherInfo {
   public catalogItemId: string;
   public namespace: string;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): LauncherInfo {
     return plainToClass(LauncherInfo, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

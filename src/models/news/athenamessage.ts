@@ -32,6 +32,7 @@ export class Athenamessage {
     return plainToClass(Athenamessage, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

@@ -23,10 +23,12 @@ export class FortniteURLHelper {
   // Account related properties
   private inAppId: string;
 
+  /* istanbul ignore next */
   constructor(inAppId: string) {
     this.inAppId = inAppId;
   }
 
+  /* istanbul ignore next */
   public get publicPaymentAccount(): string {
     return `${FortniteURLHelper.launcherPublicUrl}/public/payment/accounts/${this.inAppId}/billingaccounts/default`;
   }
@@ -35,6 +37,7 @@ export class FortniteURLHelper {
     return `${FortniteURLHelper.stats}/accountId/${userId}/bulk/window/alltime`;
   }
 
+  /* istanbul ignore next */
   public static GET_PVE_URL(accountId: string): string {
     return `${FortniteURLHelper.gameApiV2}/profile/${accountId}/public/QueryProfile`;
   }

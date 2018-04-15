@@ -12,7 +12,8 @@
     "missing-jsdoc": false,
     "await-promise": [true, "RequestPromise"],
     "completed-docs": false,
-    "quotemark": [true, "single", "avoid-escape"]
+    "quotemark": [true, "single", "avoid-escape"],
+    "no-single-line-block-comment": false
   },
   "rulesDirectory": []
 }

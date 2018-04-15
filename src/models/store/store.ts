@@ -13,6 +13,7 @@ export class Store {
     return plainToClass(Store, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

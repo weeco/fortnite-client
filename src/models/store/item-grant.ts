@@ -8,10 +8,12 @@ export class ItemGrant {
   @Type(() => Attributes)
   public attributes?: Attributes;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): ItemGrant {
     return plainToClass(ItemGrant, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }
