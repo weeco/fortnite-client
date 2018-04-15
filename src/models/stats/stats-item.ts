@@ -6,10 +6,12 @@ export class StatsItem {
   public window: TimeWindow;
   public ownerType: number;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): StatsItem {
     return plainToClass(StatsItem, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

@@ -18,6 +18,7 @@ export class News {
     return plainToClass(News, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

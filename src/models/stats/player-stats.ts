@@ -9,6 +9,7 @@ export class PlayerStats {
     return plainToClass(PlayerStats, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

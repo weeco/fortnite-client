@@ -46,6 +46,7 @@ export class Welcome {
     return plainToClass(Welcome, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

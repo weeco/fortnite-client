@@ -7,10 +7,12 @@ export class MetaAssetInfo {
   @Type(() => Payload)
   public payload: Payload;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): MetaAssetInfo {
     return plainToClass(MetaAssetInfo, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

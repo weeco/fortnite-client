@@ -71,6 +71,7 @@ export class FortniteClient {
 
   public async login(): Promise<void> {
     this.launcherAccessToken = await this.requestAccessToken();
+    /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
       this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
@@ -79,6 +80,7 @@ export class FortniteClient {
     const oAuthExchange: OAuthExchange = await this.requestOAuthExchange(this.launcherAccessToken);
     const clientAccessToken: AccessToken = await this.requestOAuthToken(oAuthExchange.code);
     this.updateClientAccessToken(clientAccessToken);
+    /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
@@ -137,6 +139,7 @@ export class FortniteClient {
     });
   }
 
+  /* istanbul ignore next */
   private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
@@ -166,6 +169,7 @@ export class FortniteClient {
     });
   }
 
+  /* istanbul ignore next */
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
     const tokenRequestConfig: IRequestRefreshTokenConfig = {
       grant_type: 'refresh_token',

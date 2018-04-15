@@ -6,10 +6,12 @@ export class Attributes {
   @Type(() => Alteration)
   public alteration: Alteration;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): Attributes {
     return plainToClass(Attributes, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

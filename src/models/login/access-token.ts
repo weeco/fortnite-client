@@ -53,6 +53,7 @@ export class AccessToken {
     return plainToClass(AccessToken, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }
