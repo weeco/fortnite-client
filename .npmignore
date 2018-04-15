@@ -29,3 +29,5 @@ yarn.lock
 .env.example
 .prettierrc
 tsconfig.json
+coverage
+.nyc_output

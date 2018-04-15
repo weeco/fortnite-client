@@ -9,7 +9,7 @@ node_js:
   - "lts/*"
 
 notifications:
-  slack: $SLACK_STRING
+  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
 
 cache:
   directories:
@@ -29,7 +29,7 @@ before_deploy:
   - >
     if ! [ "$BEFORE_DEPLOY_ALREADY_RUN" ]; then
       export BEFORE_DEPLOY_ALREADY_RUN=1;
-      git tag "$(cat VERSION)";
+      git tag "$(npm info fortnite-client version)";
       npm install --production
       npm run prepublishOnly
     fi
@@ -43,7 +43,7 @@ deploy:
       node: '9.9.0'
   - provider: releases
     api_key: $GITHUB_TOKEN
-    name: v$(cat VERSION)
+    name: $(npm info fortnite-client version)
     skip_cleanup: true
     on:
       node: '9.9.0'
