@@ -30,19 +30,20 @@ before_deploy:
     if ! [ "$BEFORE_DEPLOY_ALREADY_RUN" ]; then
       export BEFORE_DEPLOY_ALREADY_RUN=1;
       git tag "$(cat VERSION)";
+      npm install --production
       npm run prepublishOnly
     fi
 
-
 deploy:
+  - provider: npm
+    email: $NPM_EMAIL
+    api_key: $NPM_API_KEY
+    skip_cleanup: true
+    on:
+      node: '9.9.0'
   - provider: releases
     api_key: $GITHUB_TOKEN
     name: v$(cat VERSION)
     skip_cleanup: true
-    on:
-      node: '9.9.0'
-  - provider: npm
-    email: $NPM_EMAIL
-    api_key: $NPM_API_KEY
     on:
       node: '9.9.0'
