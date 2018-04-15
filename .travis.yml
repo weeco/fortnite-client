@@ -8,6 +8,9 @@ node_js:
   - "9.9.0"
   - "lts/*"
 
+notifications:
+  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
+
 cache:
   directories:
     - node_modules
@@ -19,7 +22,6 @@ script:
   - npm test
 
 after_success:
-  - npm run prepublishOnly
   - npm run coverage
 
 before_deploy:
@@ -27,6 +29,7 @@ before_deploy:
     if ! [ "$BEFORE_DEPLOY_ALREADY_RUN" ]; then
       export BEFORE_DEPLOY_ALREADY_RUN=1;
       git tag "$(cat VERSION)";
+      npm run prepublishOnly
     fi
 
 
