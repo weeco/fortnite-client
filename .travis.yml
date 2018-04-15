@@ -17,6 +17,7 @@ cache:
 
 install:
   - npm install
+  - npm install -g typescript
 
 script:
   - npm test
