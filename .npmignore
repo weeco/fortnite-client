@@ -10,6 +10,7 @@ netci.groovy
 pull_request_template.md
 scripts
 src
+test
 tests
 tslint.json
 Jakefile.js
