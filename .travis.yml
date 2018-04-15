@@ -27,7 +27,6 @@ after_success:
 
 before_deploy:
   - npm install --production
-  - npm run prepublishOnly
 
 deploy:
   - provider: npm
