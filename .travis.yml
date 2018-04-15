@@ -9,7 +9,7 @@ node_js:
   - "lts/*"
 
 notifications:
-  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
+  slack: $SLACK_STRING
 
 cache:
   directories:
