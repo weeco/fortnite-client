@@ -26,24 +26,13 @@ after_success:
   - npm run coverage
 
 before_deploy:
-  - >
-    if ! [ "$BEFORE_DEPLOY_ALREADY_RUN" ]; then
-      export BEFORE_DEPLOY_ALREADY_RUN=1;
-      git tag "$(npm info fortnite-client version)";
-      npm install --production
-      npm run prepublishOnly
-    fi
+  - npm install --production
+  - npm run prepublishOnly
 
 deploy:
   - provider: npm
     email: $NPM_EMAIL
     api_key: $NPM_API_KEY
-    skip_cleanup: true
-    on:
-      node: '9.9.0'
-  - provider: releases
-    api_key: $GITHUB_TOKEN
-    name: $(npm info fortnite-client version)
     skip_cleanup: true
     on:
       node: '9.9.0'
