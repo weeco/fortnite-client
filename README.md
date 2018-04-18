@@ -118,6 +118,20 @@ export interface IProxyOptions {
 
 ```
 
+### Available endpoints
+
+| Route                                                                                    | Returns                    |
+|------------------------------------------------------------------------------------------|----------------------------|
+| `static CHECK_STATUS()` | Promise\<Status> |
+| `static GET_GAME_NEWS()` | Promise\<Welcome> |
+| `login()` | Promise\<void> |
+| `getBattleRoyaleStatsById(userId: string)` | Promise\<PlayerStats> |
+| `getStore(locale: string = 'en-US')` | Promise\<Store> |
+| `lookup(username: string)` | Promise\<Lookup> |
+
+
+
+
 ## Contributors
 SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports
 
