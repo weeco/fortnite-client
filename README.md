@@ -135,6 +135,8 @@ export interface IProxyOptions {
 ## Contributors
 SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports
 
+Contributions to the code or documentation are welcome. If you want to add a new feature please open an issue before.
+
 ## License
 The MIT License (MIT)
 
