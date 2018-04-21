@@ -19,6 +19,17 @@ A promise based REST client for querying ingame data (such as stats) against the
 
 I am waiting for suggestions on what to add :).
 
+## Table of contents
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Basic usage](#basic-usage)
+- [Class FortniteClient](#class-fortniteclient)
+  - [Instantion](#instantion)
+  - [Available endpoints](#available-endpoints)  
+- [Contributors](#contributors)  
+- [License](#license)
+
 ## Getting started
 ### Prerequisites
 - [Node.js 8.0+](http://nodejs.org)
