@@ -136,8 +136,9 @@ export interface IProxyOptions {
 | `static CHECK_STATUS()` | Promise\<Status> |
 | `static GET_GAME_NEWS()` | Promise\<Welcome> |
 | `login()` | Promise\<void> |
-| `getBattleRoyaleStatsById(userId: string)` | Promise\<PlayerStats> |
+| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow)` | Promise\<PlayerStats> |
 | `getStore(locale: string = 'en-US')` | Promise\<Store> |
+| `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<Leaderboard> |
 | `lookup(username: string)` | Promise\<Lookup> |
 
 
