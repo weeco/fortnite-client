@@ -1,7 +1,12 @@
 import { CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
+import { GroupType } from './enums/group-type.enum';
+import { LeaderboardType } from './enums/leaderboard-type.enum';
+import { Platform } from './enums/platform.enum';
+import { TimeWindow } from './enums/time-window.enum';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { Leaderboard } from './models/leaderboard/leaderboard';
 import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
 import { Lookup } from './models/lookup/lookup';
@@ -10,11 +15,6 @@ import { IPlayerStats, PlayerStats } from './models/stats/player-stats';
 import { Status } from './models/status/status';
 import { Store } from './models/store/store';
 import { FortniteURLHelper } from './utils/fortnite-url-helper';
-import { Platform } from './enums/platform.enum';
-import { LeaderboardType } from './enums/leaderboard-type.enum';
-import { GroupType } from './enums/group-type.enum';
-import { TimeWindow } from './enums/time-window.enum';
-import { Leaderboard } from './models/leaderboard/leaderboard';
 
 /**
  * Fortnite client
@@ -93,9 +93,12 @@ export class FortniteClient {
     await this.killOtherSessions();
   }
 
-  public async getBattleRoyaleStatsById(userId: string): Promise<PlayerStats> {
+  public async getBattleRoyaleStatsById(
+    userId: string,
+    timeWindow: TimeWindow = TimeWindow.Alltime
+  ): Promise<PlayerStats> {
     const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
-      url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId)
+      url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId, timeWindow)
     });
     const playerStatsBody: {}[] = <{}[]>playerStats.body;
     const preparedObject: IPlayerStats = {

@@ -27,15 +27,15 @@ export class FortniteURLHelper {
     FortniteURLHelper.accountPublicUrl
   }/oauth/sessions/kill?killType=OTHERS_ACCOUNT_CLIENT_SERVICE`;
 
-  public static GET_PLAYER_PROFILE_REQUEST_URL(userId: string): string {
-    return `${FortniteURLHelper.stats}/accountId/${userId}/bulk/window/alltime`;
+  public static GET_PLAYER_PROFILE_REQUEST_URL(userId: string, timeWindow: TimeWindow): string {
+    return `${FortniteURLHelper.stats}/accountId/${userId}/bulk/window/${timeWindow}`;
   }
 
   public static GET_LEADERBOARDS_URL(
     leaderboardType: LeaderboardType,
     platform: Platform,
     groupType: GroupType,
-    timeWindow: TimeWindow = TimeWindow.Alltime
+    timeWindow: TimeWindow
   ): string {
     return `${
       FortniteURLHelper.leaderboardsPublicUrl
