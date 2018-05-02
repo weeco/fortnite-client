@@ -10,6 +10,11 @@ import { IPlayerStats, PlayerStats } from './models/stats/player-stats';
 import { Status } from './models/status/status';
 import { Store } from './models/store/store';
 import { FortniteURLHelper } from './utils/fortnite-url-helper';
+import { Platform } from './enums/platform.enum';
+import { LeaderboardType } from './enums/leaderboard-type.enum';
+import { GroupType } from './enums/group-type.enum';
+import { TimeWindow } from './enums/time-window.enum';
+import { Leaderboard } from './models/leaderboard/leaderboard';
 
 /**
  * Fortnite client
@@ -98,6 +103,23 @@ export class FortniteClient {
     };
 
     return PlayerStats.FROM_JSON(preparedObject);
+  }
+
+  public async getLeaderboards(
+    leaderboardType: LeaderboardType,
+    platform: Platform,
+    groupType: GroupType,
+    timeWindow: TimeWindow = TimeWindow.Alltime,
+    limit: number = 50
+  ): Promise<Leaderboard> {
+    const params: {} = { ownertype: 1, itemsPerPage: limit };
+    const leaderboardsResponse: RequestResponse = <RequestResponse>await this.apiRequest({
+      url: FortniteURLHelper.GET_LEADERBOARDS_URL(leaderboardType, platform, groupType, timeWindow),
+      method: 'POST',
+      qs: params
+    });
+
+    return Leaderboard.FROM_JSON(<{}>leaderboardsResponse.body);
   }
 
   public async getStore(locale: string = 'en-US'): Promise<Store> {
@@ -240,12 +262,6 @@ export class FortniteClient {
 
     return AccessToken.FROM_JSON(<{}>accessTokenResponse.body);
   }
-}
-
-export enum Platform {
-  PC = 'pc',
-  PS4 = 'ps4',
-  XBOX = 'xb1'
 }
 
 interface IRequestAccessTokenConfig {
