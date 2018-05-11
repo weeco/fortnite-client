@@ -1,16 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import {
-  FortniteClient,
-  GroupType,
-  IFortniteClientCredentials,
-  Leaderboard,
-  LeaderboardStatsItem,
-  LeaderboardType,
-  Lookup,
-  Platform,
-  TimeWindow
-} from '../../src/index';
+import { GroupType, Leaderboard, LeaderboardStatsItem, LeaderboardType, Platform, TimeWindow } from '../../src/index';
 import { api } from './init.spec';
 
 describe('Leaderboards method', () => {
@@ -43,6 +33,7 @@ describe('Leaderboards method', () => {
     const json: {} = r.toJson();
     expect(json).to.be.an('object');
     const deserialized: Leaderboard = Leaderboard.FROM_JSON(json);
+    expect(deserialized).to.be.an.instanceof(Leaderboard);
   }).timeout(6 * 1000);
 
   // tslint:disable-next-line:mocha-no-side-effect-code
@@ -58,5 +49,6 @@ describe('Leaderboards method', () => {
     const json: {} = item.toJson();
     expect(json).to.be.an('object');
     const deserialized: LeaderboardStatsItem = LeaderboardStatsItem.FROM_JSON(json);
+    expect(deserialized).to.be.an.instanceof(LeaderboardStatsItem);
   }).timeout(6 * 1000);
 });
