@@ -1,0 +1,37 @@
+branches:
+  only:
+  - master
+
+language: node_js
+
+node_js:
+  - "9.9.0"
+  - "lts/*"
+
+notifications:
+  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+  - npm install -g typescript
+
+script:
+  - npm test
+
+after_success:
+  - npm run coverage
+
+before_deploy:
+  - npm install --production
+
+deploy:
+  - provider: npm
+    email: $NPM_EMAIL
+    api_key: $NPM_API_KEY
+    skip_cleanup: true
+    on:
+      node: '9.9.0'

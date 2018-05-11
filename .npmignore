@@ -10,6 +10,7 @@ netci.groovy
 pull_request_template.md
 scripts
 src
+test
 tests
 tslint.json
 Jakefile.js
@@ -28,3 +29,5 @@ yarn.lock
 .env.example
 .prettierrc
 tsconfig.json
+coverage
+.nyc_output

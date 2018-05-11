@@ -7,10 +7,12 @@ export class Message {
   public body: string;
   public messagetype?: MessageType;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): Message {
     return plainToClass(Message, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

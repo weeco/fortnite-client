@@ -5,7 +5,7 @@ config();
 
 // Parse Proxy configuration
 let proxy: IProxyOptions = null;
-const isProxyEnabled: boolean = process.env.PROXY_ENABLED.toLowerCase() === 'true';
+const isProxyEnabled: boolean = process.env.PROXY_ENABLED ? process.env.PROXY_ENABLED.toLowerCase() === 'true' : false;
 if (isProxyEnabled) {
   proxy = {
     host: process.env.PROXY_HOST,

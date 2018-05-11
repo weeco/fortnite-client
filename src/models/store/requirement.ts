@@ -5,10 +5,12 @@ export class Requirement {
   public requiredId: string;
   public minQuantity: number;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): Requirement {
     return plainToClass(Requirement, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

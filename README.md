@@ -1,4 +1,11 @@
+
+![Fortnite REST Api Client banner](https://raw.githubusercontent.com/weeco/fortnite-client/develop/git-banner.jpg)
+
 # Fortnite REST Client
+[![Build Status](https://travis-ci.org/weeco/fortnite-client.svg?branch=master)](https://travis-ci.org/weeco/fortnite-client)
+[![npm](https://img.shields.io/npm/v//fortnite-client.svg)](https://www.npmjs.com/package/fortnite-client)
+[![codecov](https://codecov.io/gh/weeco/fortnite-client/branch/master/graph/badge.svg)](https://codecov.io/gh/weeco/fortnite-client)
+
 A promise based REST client for querying ingame data (such as stats) against the official Fortnite game servers. A valid Fortnite account is required to access these endpoints.
 
 ### Features
@@ -12,7 +19,20 @@ A promise based REST client for querying ingame data (such as stats) against the
 
 **And coming up on the roadmap...**
 
-I am waiting for suggestions on what to add :).
+- [ ] Event for incoming friend requests :raising_hand:
+- [ ] Sending messages to friends :e-mail:
+- [ ] Event for incoming friend messages :inbox_tray:
+
+## Table of contents
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Basic usage](#basic-usage)
+- [Class FortniteClient](#class-fortniteclient)
+  - [Instantion](#instantion)
+  - [Available endpoints](#available-endpoints)  
+- [Contributors](#contributors)  
+- [License](#license)
 
 ## Getting started
 ### Prerequisites
@@ -112,3 +132,34 @@ export interface IProxyOptions {
 }
 
 ```
+
+### Available endpoints
+
+| Route                                                                                    | Returns                    |
+|------------------------------------------------------------------------------------------|----------------------------|
+| `static CHECK_STATUS()` | Promise\<Status> |
+| `static GET_GAME_NEWS()` | Promise\<Welcome> |
+| `login()` | Promise\<void> |
+| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow)` | Promise\<PlayerStats> |
+| `getStore(locale: string = 'en-US')` | Promise\<Store> |
+| `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<Leaderboard> |
+| `lookup(username: string)` | Promise\<Lookup> |
+
+
+
+
+## Contributors
+SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports
+
+Contributions to the code or documentation are welcome. If you want to add a new feature please open an issue before.
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2018 Weeco
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

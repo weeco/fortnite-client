@@ -9,10 +9,12 @@ export class Price {
   public basePrice: number;
   public saleType?: string;
 
+  /* istanbul ignore next */
   public static FROM_JSON(jsonObject: {}): Price {
     return plainToClass(Price, jsonObject);
   }
 
+  /* istanbul ignore next */
   public toJson(): {} {
     return classToPlain(this);
   }

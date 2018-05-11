@@ -1,7 +1,12 @@
 import { CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
+import { GroupType } from './enums/group-type.enum';
+import { LeaderboardType } from './enums/leaderboard-type.enum';
+import { Platform } from './enums/platform.enum';
+import { TimeWindow } from './enums/time-window.enum';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { Leaderboard } from './models/leaderboard/leaderboard';
 import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
 import { Lookup } from './models/lookup/lookup';
@@ -71,6 +76,7 @@ export class FortniteClient {
 
   public async login(): Promise<void> {
     this.launcherAccessToken = await this.requestAccessToken();
+    /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
       this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
@@ -79,6 +85,7 @@ export class FortniteClient {
     const oAuthExchange: OAuthExchange = await this.requestOAuthExchange(this.launcherAccessToken);
     const clientAccessToken: AccessToken = await this.requestOAuthToken(oAuthExchange.code);
     this.updateClientAccessToken(clientAccessToken);
+    /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
@@ -86,9 +93,12 @@ export class FortniteClient {
     await this.killOtherSessions();
   }
 
-  public async getBattleRoyaleStatsById(userId: string): Promise<PlayerStats> {
+  public async getBattleRoyaleStatsById(
+    userId: string,
+    timeWindow: TimeWindow = TimeWindow.Alltime
+  ): Promise<PlayerStats> {
     const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
-      url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId)
+      url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId, timeWindow)
     });
     const playerStatsBody: {}[] = <{}[]>playerStats.body;
     const preparedObject: IPlayerStats = {
@@ -96,6 +106,23 @@ export class FortniteClient {
     };
 
     return PlayerStats.FROM_JSON(preparedObject);
+  }
+
+  public async getLeaderboards(
+    leaderboardType: LeaderboardType,
+    platform: Platform,
+    groupType: GroupType,
+    timeWindow: TimeWindow = TimeWindow.Alltime,
+    limit: number = 50
+  ): Promise<Leaderboard> {
+    const params: {} = { ownertype: 1, itemsPerPage: limit };
+    const leaderboardsResponse: RequestResponse = <RequestResponse>await this.apiRequest({
+      url: FortniteURLHelper.GET_LEADERBOARDS_URL(leaderboardType, platform, groupType, timeWindow),
+      method: 'POST',
+      qs: params
+    });
+
+    return Leaderboard.FROM_JSON(<{}>leaderboardsResponse.body);
   }
 
   public async getStore(locale: string = 'en-US'): Promise<Store> {
@@ -137,6 +164,7 @@ export class FortniteClient {
     });
   }
 
+  /* istanbul ignore next */
   private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
@@ -166,6 +194,7 @@ export class FortniteClient {
     });
   }
 
+  /* istanbul ignore next */
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
     const tokenRequestConfig: IRequestRefreshTokenConfig = {
       grant_type: 'refresh_token',
@@ -236,12 +265,6 @@ export class FortniteClient {
 
     return AccessToken.FROM_JSON(<{}>accessTokenResponse.body);
   }
-}
-
-export enum Platform {
-  PC = 'pc',
-  PS4 = 'ps4',
-  XBOX = 'xb1'
 }
 
 interface IRequestAccessTokenConfig {

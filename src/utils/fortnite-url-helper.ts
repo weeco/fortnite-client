@@ -1,7 +1,14 @@
+import { GroupType } from '../enums/group-type.enum';
+import { LeaderboardType } from '../enums/leaderboard-type.enum';
+import { Platform } from '../enums/platform.enum';
+import { TimeWindow } from '../enums/time-window.enum';
+
+// tslint:disable-next-line:no-unnecessary-class
 export class FortniteURLHelper {
   // Base URLs
   public static readonly lightSwitchUrl: string = 'https://lightswitch-public-service-prod06.ol.epicgames.com/lightswitch/api';
   public static readonly accountPublicUrl: string = 'https://account-public-service-prod03.ol.epicgames.com/account/api';
+  public static readonly leaderboardsPublicUrl: string = 'https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api';
   public static readonly launcherPublicUrl: string = 'https://launcher-public-service-prod06.ol.epicgames.com/launcher/api';
   public static readonly contentPublicUrl: string = 'https://fortnitecontent-website-prod07.ol.epicgames.com/content/api';
   public static readonly gameApiV2: string = 'https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/game/v2';
@@ -20,22 +27,18 @@ export class FortniteURLHelper {
     FortniteURLHelper.accountPublicUrl
   }/oauth/sessions/kill?killType=OTHERS_ACCOUNT_CLIENT_SERVICE`;
 
-  // Account related properties
-  private inAppId: string;
-
-  constructor(inAppId: string) {
-    this.inAppId = inAppId;
+  public static GET_PLAYER_PROFILE_REQUEST_URL(userId: string, timeWindow: TimeWindow): string {
+    return `${FortniteURLHelper.stats}/accountId/${userId}/bulk/window/${timeWindow}`;
   }
 
-  public get publicPaymentAccount(): string {
-    return `${FortniteURLHelper.launcherPublicUrl}/public/payment/accounts/${this.inAppId}/billingaccounts/default`;
-  }
-
-  public static GET_PLAYER_PROFILE_REQUEST_URL(userId: string): string {
-    return `${FortniteURLHelper.stats}/accountId/${userId}/bulk/window/alltime`;
-  }
-
-  public static GET_PVE_URL(accountId: string): string {
-    return `${FortniteURLHelper.gameApiV2}/profile/${accountId}/public/QueryProfile`;
+  public static GET_LEADERBOARDS_URL(
+    leaderboardType: LeaderboardType,
+    platform: Platform,
+    groupType: GroupType,
+    timeWindow: TimeWindow
+  ): string {
+    return `${
+      FortniteURLHelper.leaderboardsPublicUrl
+    }/leaderboards/type/global/stat/br_${leaderboardType}_${platform}_m0_${groupType}/window/${timeWindow}`;
   }
 }
