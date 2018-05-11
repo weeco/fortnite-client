@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { FortniteClient, IFortniteClientCredentials, Store } from '../../src/index';
+import { Store } from '../../src/index';
 import { api } from './init.spec';
 
 describe('Get store', () => {

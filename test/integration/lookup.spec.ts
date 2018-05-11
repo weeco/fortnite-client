@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { FortniteClient, IFortniteClientCredentials, Lookup } from '../../src/index';
+import { Lookup } from '../../src/index';
 import { api } from './init.spec';
 
 describe('Lookup method', () => {
