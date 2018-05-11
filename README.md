@@ -1,5 +1,7 @@
-# Fortnite REST Client
 
+![Fortnite REST Api Client banner](https://raw.githubusercontent.com/weeco/fortnite-client/develop/git-banner.jpg)
+
+# Fortnite REST Client
 [![Build Status](https://travis-ci.org/weeco/fortnite-client.svg?branch=master)](https://travis-ci.org/weeco/fortnite-client)
 [![npm](https://img.shields.io/npm/v//fortnite-client.svg)](https://www.npmjs.com/package/fortnite-client)
 [![codecov](https://codecov.io/gh/weeco/fortnite-client/branch/master/graph/badge.svg)](https://codecov.io/gh/weeco/fortnite-client)
@@ -17,7 +19,9 @@ A promise based REST client for querying ingame data (such as stats) against the
 
 **And coming up on the roadmap...**
 
-I am waiting for suggestions on what to add :).
+- [ ] Event for incoming friend requests :raising_hand:
+- [ ] Sending messages to friends :e-mail:
+- [ ] Event for incoming friend messages :inbox_tray:
 
 ## Table of contents
 - [Getting Started](#getting-started)
