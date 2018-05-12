@@ -152,17 +152,8 @@ export interface IProxyOptions {
 - Fiddler ( https://www.telerik.com/download/fiddler )
 - Enable capture HTTPS traffic in Fiddler : Tools -> Options -> HTTPS -> Check "Capture HTTPS Connects" & "Decrypt HTTPS traffic"
 
-**Sniffing the traffic**
-
-I use Fiddler to sniff and inspect the traffic sent between the Fortnite client and the game servers. Fiddler injects it's own certificate so that you can decrypt the traffic sent via HTTPS (MITM attack). However, recently Epic Games added detection of untrusted SSL certificates (SSL pinning), so that it would detect the injected custom certificate. To bypass this detection we can use the following workflow:
-
-1. Start Fiddler and start capturing
-2. Open the launcher and login (may happen automatically)
-3. Stop the capturing session
-4. Launch Fortnite and wait until it shows the loading / updating screen
-5. Start the capturing session again
-
-**Note:** This workflow probably only works becuase the game validates the SSL certificate before Fiddler injects it's own certificate. 
+**Sniffing the endpoints**
+I use Fiddler to sniff and inspect the traffic sent between the Fortnite client and the game servers. Fiddler injects it's own certificate so that you can decrypt the traffic sent via HTTPS (MITM attack). However, recently Epic Games added detection of untrusted SSL certificates (SSL pinning), so that it would detect the injected custom certificate. Therefore I am currently not able to sniff on endpoints as HTTPS even encrypts the requested URL. In order to bypass this approach we would probably need to replace the certificate the Fortnite client does check for with our own custom certificate. If someone knows a better way to sniff the traffic with enabled SSL pinning please create an issue and enlighten me :). 
 
 ## Contributors
 SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports
