@@ -15,7 +15,7 @@ describe('Get return from public endpoints', () => {
   it('should get the fortnite game news', async () => {
     const r: Welcome = await FortniteClient.GET_GAME_NEWS();
     expect(r).to.be.an('object');
-    expect(r.locale).to.equal('en_US');
+    expect(r.locale).to.equal('en-US');
     expect(r.loginmessage.title).to.equal('LoginMessage');
     expect(r.savetheworldnews.title).to.equal('SaveTheWorldNews');
     expect(r.battleroyalenews.title).to.equal('battleroyalenews');

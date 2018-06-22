@@ -1,4 +1,4 @@
-import { CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
+import { RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
 import { GroupType } from './enums/group-type.enum';
 import { LeaderboardType } from './enums/leaderboard-type.enum';
@@ -43,7 +43,12 @@ export class FortniteClient {
       proxy: fullOptions.proxy,
       rejectUnauthorized: false,
       json: true,
-      resolveWithFullResponse: true
+      resolveWithFullResponse: true,
+      headers: {
+        'User-Agent': 'Fortnite/++Fortnite+Release-4.4.x-CL-4132537 Windows/6.2.9200.1.256.64bit',
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
     });
     this.credentials = credentials;
   }
@@ -60,15 +65,16 @@ export class FortniteClient {
     return Status.FROM_JSON(statusResponseBody[0]);
   }
 
-  public static async GET_GAME_NEWS(countryCode: string = 'US'): Promise<Welcome> {
-    const jar: CookieJar = request.jar();
-    jar.setCookie('epicCountry', countryCode);
+  public static async GET_GAME_NEWS(locale: string = 'en-US'): Promise<Welcome> {
     const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.gameNews,
       timeout: 5 * 1000,
       json: true,
       resolveWithFullResponse: true,
-      jar
+      headers: {
+        'Accept-Region': 'EU',
+        'Accept-Language': locale
+      }
     });
 
     return Welcome.FROM_JSON(<{}>statusResponse.body);
@@ -113,13 +119,15 @@ export class FortniteClient {
     platform: Platform,
     groupType: GroupType,
     timeWindow: TimeWindow = TimeWindow.Alltime,
+    pageNumber: number = 0,
     limit: number = 50
   ): Promise<Leaderboard> {
-    const params: {} = { ownertype: 1, itemsPerPage: limit };
+    const params: {} = { ownertype: 1, pageNumber, itemsPerPage: limit };
     const leaderboardsResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_LEADERBOARDS_URL(leaderboardType, platform, groupType, timeWindow),
       method: 'POST',
-      qs: params
+      qs: params,
+      body: []
     });
 
     return Leaderboard.FROM_JSON(<{}>leaderboardsResponse.body);
