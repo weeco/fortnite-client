@@ -3,9 +3,11 @@ import * as request from 'request-promise-native';
 import { GroupType } from './enums/group-type.enum';
 import { LeaderboardType } from './enums/leaderboard-type.enum';
 import { Platform } from './enums/platform.enum';
+import { LoginToken } from './enums/static-token.enum';
 import { TimeWindow } from './enums/time-window.enum';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { IRequestOAuthTokenConfig } from './interfaces/request-oauth-token.interface';
 import { Leaderboard } from './models/leaderboard/leaderboard';
 import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
@@ -45,7 +47,6 @@ export class FortniteClient {
       json: true,
       resolveWithFullResponse: true,
       headers: {
-        'User-Agent': 'Fortnite/++Fortnite+Release-4.4.x-CL-4132537 Windows/6.2.9200.1.256.64bit',
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
       }
@@ -84,7 +85,7 @@ export class FortniteClient {
     this.launcherAccessToken = await this.requestAccessToken();
     /* istanbul ignore next */
     setTimeout(
-      async () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
+      async () => this.onTokenExpired(this.launcherAccessToken, LoginToken.Launcher),
       this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
     );
 
@@ -93,7 +94,7 @@ export class FortniteClient {
     this.updateClientAccessToken(clientAccessToken);
     /* istanbul ignore next */
     setTimeout(
-      async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
+      async () => this.onTokenExpired(this.clientAccessToken, LoginToken.Fortnite),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
     );
     await this.killOtherSessions();
@@ -176,11 +177,11 @@ export class FortniteClient {
   private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
-      case this.credentials.clientToken:
+      case LoginToken.Fortnite:
         this.updateClientAccessToken(refreshedToken);
         break;
 
-      case this.credentials.clientLauncherToken:
+      case LoginToken.Launcher:
         this.launcherAccessToken = refreshedToken;
         break;
 
@@ -231,7 +232,7 @@ export class FortniteClient {
     const oAuthTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.oAuthToken,
       headers: {
-        Authorization: `basic ${this.credentials.clientToken}`
+        Authorization: `basic ${LoginToken.Fortnite}`
       },
       form: requestTokenConfig,
       method: 'POST'
@@ -266,7 +267,7 @@ export class FortniteClient {
     const accessTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest(FortniteURLHelper.oAuthToken, {
       form: requestTokenConfig,
       headers: {
-        Authorization: `basic ${this.credentials.clientLauncherToken}`
+        Authorization: `basic ${LoginToken.Launcher}`
       },
       method: 'POST'
     });
@@ -280,13 +281,6 @@ interface IRequestAccessTokenConfig {
   username: string;
   password: string;
   includePerms: boolean;
-}
-
-interface IRequestOAuthTokenConfig {
-  grant_type: 'password' | 'exchange_code';
-  exchange_code: string;
-  includePerms: boolean;
-  token_type: 'eg1';
 }
 
 interface IRequestRefreshTokenConfig {
