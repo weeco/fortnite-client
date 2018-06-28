@@ -31,6 +31,9 @@ A promise based REST client for querying ingame data (such as stats) against the
 - [Class FortniteClient](#class-fortniteclient)
   - [Instantion](#instantion)
   - [Available endpoints](#available-endpoints)  
+- [Class LauncherClient](#class-launcherclient)
+  - [Instantion](#instantion-1)
+  - [Available endpoints](#available-endpoints-1)  
 - [Contributors](#contributors)  
 - [License](#license)
 
@@ -53,9 +56,7 @@ import { FortniteClient, IFortniteClientCredentials, Lookup, PlayerStats } from 
 
 const credentials: IFortniteClientCredentials = {
   email: 'weeco91@gmail.com',
-  password: 'my-strong-password',
-  clientLauncherToken: 'QzRhMDJjZjhmNDQxNGUyOWIxNTkyZMg3NmRhMzZmOWE6ZGHhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=',
-  clientToken: 'RHQ2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI9NDEzMTg2MjYyZDM3YTEzZuM4NGQ='
+  password: 'my-strong-password'
 };
 const api: FortniteClient = new FortniteClient(credentials);
 
@@ -80,9 +81,7 @@ const FortniteClient = require('fortnite-client').FortniteClient;
 
 const credentials = {
   email: 'weeco91@gmail.com',
-  password: 'my-strong-password',
-  clientLauncherToken: 'QzRhMDJjZjhmNDQxNGUyOWIxNTkyZMg3NmRhMzZmOWE6ZGHhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=',
-  clientToken: 'RHQ2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI9NDEzMTg2MjYyZDM3YTEzZuM4NGQ='
+  password: 'my-strong-password'
 };
 const api = new FortniteClient(credentials);
 
@@ -145,15 +144,17 @@ export interface IProxyOptions {
 | `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<Leaderboard> |
 | `lookup(username: string)` | Promise\<Lookup> |
 
+## Class LauncherClient
+The class LauncherClient offers some of the endpoints (which I considered as useful) made by the Epic Games Launcher.
 
-## How to analyze endpoints
+### Instantion
+When creating an instance of LauncherClient you can pass a couple options which are the same as described in [FortniteClient Instantion](#instantion).
 
-**Prerequisites**
-- Fiddler ( https://www.telerik.com/download/fiddler )
-- Enable capture HTTPS traffic in Fiddler : Tools -> Options -> HTTPS -> Check "Capture HTTPS Connects" & "Decrypt HTTPS traffic"
+### Available endpoints
 
-**Sniffing the endpoints**
-I use Fiddler to sniff and inspect the traffic sent between the Fortnite client and the game servers. Fiddler injects it's own certificate so that you can decrypt the traffic sent via HTTPS (MITM attack). However, recently Epic Games added detection of untrusted SSL certificates (SSL pinning), so that it would detect the injected custom certificate. Therefore I am currently not able to sniff on endpoints as HTTPS even encrypts the requested URL. In order to bypass this approach we would probably need to replace the certificate the Fortnite client does check for with our own custom certificate. If someone knows a better way to sniff the traffic with enabled SSL pinning please create an issue and enlighten me :). 
+| Route                                                                                    | Returns                    |
+|------------------------------------------------------------------------------------------|----------------------------|
+| `buildInformation()` | Promise\<BuildInformation> |
 
 ## Contributors
 SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports
