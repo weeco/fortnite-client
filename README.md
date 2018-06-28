@@ -31,6 +31,9 @@ A promise based REST client for querying ingame data (such as stats) against the
 - [Class FortniteClient](#class-fortniteclient)
   - [Instantion](#instantion)
   - [Available endpoints](#available-endpoints)  
+- [Class LauncherClient](#class-launcherclient)
+  - [Instantion](#instantion-1)
+  - [Available endpoints](#available-endpoints-1)  
 - [Contributors](#contributors)  
 - [License](#license)
 
@@ -53,9 +56,7 @@ import { FortniteClient, IFortniteClientCredentials, Lookup, PlayerStats } from 
 
 const credentials: IFortniteClientCredentials = {
   email: 'weeco91@gmail.com',
-  password: 'my-strong-password',
-  clientLauncherToken: 'QzRhMDJjZjhmNDQxNGUyOWIxNTkyZMg3NmRhMzZmOWE6ZGHhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=',
-  clientToken: 'RHQ2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI9NDEzMTg2MjYyZDM3YTEzZuM4NGQ='
+  password: 'my-strong-password'
 };
 const api: FortniteClient = new FortniteClient(credentials);
 
@@ -80,9 +81,7 @@ const FortniteClient = require('fortnite-client').FortniteClient;
 
 const credentials = {
   email: 'weeco91@gmail.com',
-  password: 'my-strong-password',
-  clientLauncherToken: 'QzRhMDJjZjhmNDQxNGUyOWIxNTkyZMg3NmRhMzZmOWE6ZGHhZmJjY2M3Mzc3NDUwMzlkZmZlNTNkOTRmYzc2Y2Y=',
-  clientToken: 'RHQ2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI9NDEzMTg2MjYyZDM3YTEzZuM4NGQ='
+  password: 'my-strong-password'
 };
 const api = new FortniteClient(credentials);
 
@@ -145,8 +144,17 @@ export interface IProxyOptions {
 | `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<Leaderboard> |
 | `lookup(username: string)` | Promise\<Lookup> |
 
+## Class LauncherClient
+The class LauncherClient offers some of the endpoints (which I considered as useful) made by the Epic Games Launcher.
 
+### Instantion
+When creating an instance of LauncherClient you can pass a couple options which are the same as described in [FortniteClient Instantion](#instantion).
 
+### Available endpoints
+
+| Route                                                                                    | Returns                    |
+|------------------------------------------------------------------------------------------|----------------------------|
+| `buildInformation()` | Promise\<BuildInformation> |
 
 ## Contributors
 SkYNewZ (https://github.com/SkYNewZ) - Primarily helped with the Git setup including Travis CI & Code coverage reports

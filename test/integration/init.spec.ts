@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { FortniteClient, IFortniteClientCredentials, IProxyOptions } from '../../src';
+import { FortniteClient, IFortniteClientCredentials, IProxyOptions, LauncherClient } from '../../src';
 
 config();
 
@@ -15,9 +15,8 @@ if (isProxyEnabled) {
 
 const credentials: IFortniteClientCredentials = {
   email: process.env.FORTNITE_ACCOUNT_EMAIL,
-  password: process.env.FORTNITE_ACCOUNT_PASSWORD,
-  clientLauncherToken: process.env.FORTNITE_ACCOUNT_CLIENT_LAUNCHER_TOKEN,
-  clientToken: process.env.FORTNITE_ACCOUNT_CLIENT_TOKEN
+  password: process.env.FORTNITE_ACCOUNT_PASSWORD
 };
 
 export const api: FortniteClient = new FortniteClient(credentials, { proxy });
+export const launcherApi: LauncherClient = new LauncherClient(credentials, { proxy });

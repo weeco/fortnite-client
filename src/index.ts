@@ -5,10 +5,12 @@ import 'reflect-metadata';
 // Commonly used exports
 // -------------------------------------------------------------------------
 export * from './fortnite-client';
+export * from './launcher-client';
 
 // -------------------------------------------------------------------------
 // Commonly used models
 // -------------------------------------------------------------------------
+export * from './models/build-information/build-information';
 export * from './models/leaderboard/leaderboard-stats-item';
 export * from './models/leaderboard/leaderboard';
 export * from './models/lookup/lookup';

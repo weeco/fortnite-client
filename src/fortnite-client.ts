@@ -1,11 +1,13 @@
-import { CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
+import { RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
 import { GroupType } from './enums/group-type.enum';
 import { LeaderboardType } from './enums/leaderboard-type.enum';
 import { Platform } from './enums/platform.enum';
+import { LoginToken } from './enums/static-token.enum';
 import { TimeWindow } from './enums/time-window.enum';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { IRequestOAuthTokenConfig } from './interfaces/request-oauth-token.interface';
 import { Leaderboard } from './models/leaderboard/leaderboard';
 import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
@@ -43,7 +45,11 @@ export class FortniteClient {
       proxy: fullOptions.proxy,
       rejectUnauthorized: false,
       json: true,
-      resolveWithFullResponse: true
+      resolveWithFullResponse: true,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
     });
     this.credentials = credentials;
   }
@@ -60,15 +66,16 @@ export class FortniteClient {
     return Status.FROM_JSON(statusResponseBody[0]);
   }
 
-  public static async GET_GAME_NEWS(countryCode: string = 'US'): Promise<Welcome> {
-    const jar: CookieJar = request.jar();
-    jar.setCookie('epicCountry', countryCode);
+  public static async GET_GAME_NEWS(locale: string = 'en-US'): Promise<Welcome> {
     const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.gameNews,
       timeout: 5 * 1000,
       json: true,
       resolveWithFullResponse: true,
-      jar
+      headers: {
+        'Accept-Region': 'EU',
+        'Accept-Language': locale
+      }
     });
 
     return Welcome.FROM_JSON(<{}>statusResponse.body);
@@ -78,7 +85,7 @@ export class FortniteClient {
     this.launcherAccessToken = await this.requestAccessToken();
     /* istanbul ignore next */
     setTimeout(
-      async () => this.onTokenExpired(this.launcherAccessToken, this.credentials.clientLauncherToken),
+      async () => this.onTokenExpired(this.launcherAccessToken, LoginToken.Launcher),
       this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
     );
 
@@ -87,7 +94,7 @@ export class FortniteClient {
     this.updateClientAccessToken(clientAccessToken);
     /* istanbul ignore next */
     setTimeout(
-      async () => this.onTokenExpired(this.clientAccessToken, this.credentials.clientToken),
+      async () => this.onTokenExpired(this.clientAccessToken, LoginToken.Fortnite),
       this.clientAccessToken.expiresIn * 1000 - 15 * 1000
     );
     await this.killOtherSessions();
@@ -113,13 +120,15 @@ export class FortniteClient {
     platform: Platform,
     groupType: GroupType,
     timeWindow: TimeWindow = TimeWindow.Alltime,
+    pageNumber: number = 0,
     limit: number = 50
   ): Promise<Leaderboard> {
-    const params: {} = { ownertype: 1, itemsPerPage: limit };
+    const params: {} = { ownertype: 1, pageNumber, itemsPerPage: limit };
     const leaderboardsResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_LEADERBOARDS_URL(leaderboardType, platform, groupType, timeWindow),
       method: 'POST',
-      qs: params
+      qs: params,
+      body: []
     });
 
     return Leaderboard.FROM_JSON(<{}>leaderboardsResponse.body);
@@ -168,11 +177,11 @@ export class FortniteClient {
   private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
-      case this.credentials.clientToken:
+      case LoginToken.Fortnite:
         this.updateClientAccessToken(refreshedToken);
         break;
 
-      case this.credentials.clientLauncherToken:
+      case LoginToken.Launcher:
         this.launcherAccessToken = refreshedToken;
         break;
 
@@ -223,7 +232,7 @@ export class FortniteClient {
     const oAuthTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.oAuthToken,
       headers: {
-        Authorization: `basic ${this.credentials.clientToken}`
+        Authorization: `basic ${LoginToken.Fortnite}`
       },
       form: requestTokenConfig,
       method: 'POST'
@@ -258,7 +267,7 @@ export class FortniteClient {
     const accessTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest(FortniteURLHelper.oAuthToken, {
       form: requestTokenConfig,
       headers: {
-        Authorization: `basic ${this.credentials.clientLauncherToken}`
+        Authorization: `basic ${LoginToken.Launcher}`
       },
       method: 'POST'
     });
@@ -272,13 +281,6 @@ interface IRequestAccessTokenConfig {
   username: string;
   password: string;
   includePerms: boolean;
-}
-
-interface IRequestOAuthTokenConfig {
-  grant_type: 'password' | 'exchange_code';
-  exchange_code: string;
-  includePerms: boolean;
-  token_type: 'eg1';
 }
 
 interface IRequestRefreshTokenConfig {

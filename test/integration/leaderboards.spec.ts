@@ -15,6 +15,7 @@ describe('Leaderboards method', () => {
       Platform.PC,
       GroupType.Solo,
       TimeWindow.Weekly,
+      0,
       100
     );
     expect(r.statWindow).to.be.a('string');
@@ -28,6 +29,7 @@ describe('Leaderboards method', () => {
       Platform.PC,
       GroupType.Solo,
       TimeWindow.Weekly,
+      0,
       100
     );
     const json: {} = r.toJson();
@@ -43,6 +45,7 @@ describe('Leaderboards method', () => {
       Platform.PC,
       GroupType.Solo,
       TimeWindow.Weekly,
+      0,
       100
     );
     const item: LeaderboardStatsItem = r.entries[0];
