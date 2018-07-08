@@ -173,7 +173,6 @@ export class FortniteClient {
     });
   }
 
-  /* istanbul ignore next */
   private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
     const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
@@ -203,7 +202,6 @@ export class FortniteClient {
     });
   }
 
-  /* istanbul ignore next */
   private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
     const tokenRequestConfig: IRequestRefreshTokenConfig = {
       grant_type: 'refresh_token',
