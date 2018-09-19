@@ -1,5 +1,5 @@
 import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
-import { Message } from './message';
+import { IMessage, Message } from './message';
 
 export class Loginmessage {
   @Expose({ name: '_type' })
@@ -14,7 +14,12 @@ export class Loginmessage {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ILoginmessage {
+    return <ILoginmessage>classToPlain(this);
   }
+}
+
+export interface ILoginmessage {
+  _type: string;
+  message: IMessage;
 }

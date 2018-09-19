@@ -13,7 +13,14 @@ export class StatsItem {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IStatsItem {
+    return <IStatsItem>classToPlain(this);
   }
+}
+
+export interface IStatsItem {
+  name: string;
+  value: number;
+  window: TimeWindow;
+  ownerType: number;
 }

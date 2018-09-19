@@ -1,5 +1,5 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { Payload } from './payload';
+import { IPayload, Payload } from './payload';
 
 export class MetaAssetInfo {
   public structName: StructName;
@@ -13,11 +13,16 @@ export class MetaAssetInfo {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IMetaAssetInfo {
+    return <IMetaAssetInfo>classToPlain(this);
   }
 }
 
 export enum StructName {
   FortCatalogMeta = 'FortCatalogMeta'
+}
+
+export interface IMetaAssetInfo {
+  structName: StructName;
+  payload: IPayload;
 }

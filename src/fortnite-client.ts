@@ -13,7 +13,8 @@ import { AccessToken } from './models/login/access-token';
 import { OAuthExchange } from './models/login/oauth-exchange';
 import { Lookup } from './models/lookup/lookup';
 import { Welcome } from './models/news/welcome';
-import { IPlayerStats, PlayerStats } from './models/stats/player-stats';
+import { IPlayerStatsPrepared, PlayerStats } from './models/stats/player-stats';
+import { IStatsItem } from './models/stats/stats-item';
 import { Status } from './models/status/status';
 import { Store } from './models/store/store';
 import { FortniteURLHelper } from './utils/fortnite-url-helper';
@@ -107,8 +108,8 @@ export class FortniteClient {
     const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId, timeWindow)
     });
-    const playerStatsBody: {}[] = <{}[]>playerStats.body;
-    const preparedObject: IPlayerStats = {
+    const playerStatsBody: IStatsItem[] = <IStatsItem[]>playerStats.body;
+    const preparedObject: IPlayerStatsPrepared = {
       stats: playerStatsBody
     };
 

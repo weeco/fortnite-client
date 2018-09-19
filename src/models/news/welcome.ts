@@ -1,6 +1,6 @@
 import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
-import { Athenamessage } from './athenamessage';
-import { Subgameselectdata } from './subgameselectdata';
+import { Athenamessage, IAthenaMessage } from './athenamessage';
+import { ISubgameselectdata, Subgameselectdata } from './subgameselectdata';
 
 export class Welcome {
   @Expose({ name: '_view' })
@@ -50,4 +50,20 @@ export class Welcome {
   public toJson(): {} {
     return classToPlain(this);
   }
+}
+
+export interface IWelcome {
+  _view: string;
+  _activeDate: string;
+  _locale: string;
+  _title: string;
+  lastModified: string;
+  expiresAt?: string;
+  survivalmessage: IAthenaMessage;
+  athenamessage: IAthenaMessage;
+  subgameselectdata: ISubgameselectdata;
+  savetheworldnews: IAthenaMessage;
+  battleroyalenews: IAthenaMessage;
+  loginmessage: IAthenaMessage;
+  emergencynotice: IAthenaMessage;
 }

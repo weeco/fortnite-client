@@ -1,5 +1,5 @@
 import { classToPlain, Expose, plainToClass } from 'class-transformer';
-import { Message, MessageType } from './message';
+import { IMessage, Message, MessageType } from './message';
 
 export class PlatformMessage {
   @Expose({ name: '_type' })
@@ -14,7 +14,13 @@ export class PlatformMessage {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IPlatformMessage {
+    return <IPlatformMessage>classToPlain(this);
   }
+}
+
+export interface IPlatformMessage {
+  _type: MessageType;
+  message: IMessage;
+  platform: string;
 }

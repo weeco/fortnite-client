@@ -15,3 +15,9 @@ export class LauncherInfo {
     return classToPlain(this);
   }
 }
+
+export interface ILauncherInfo {
+  appName: string;
+  catalogItemId: string;
+  namespace: string;
+}

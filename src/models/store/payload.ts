@@ -10,7 +10,12 @@ export class Payload {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IPayload {
+    return <IPayload>classToPlain(this);
   }
+}
+
+export interface IPayload {
+  chaseItems: string[];
+  packDefinition: string;
 }

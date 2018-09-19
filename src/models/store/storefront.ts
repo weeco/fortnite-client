@@ -1,5 +1,5 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { CatalogEntry } from './catalog-entry';
+import { CatalogEntry, ICatalogEntry } from './catalog-entry';
 
 export class Storefront {
   public name: string;
@@ -13,7 +13,12 @@ export class Storefront {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IStoreFront {
+    return <IStoreFront>classToPlain(this);
   }
+}
+
+export interface IStoreFront {
+  name: string;
+  catalogEntries: ICatalogEntry[];
 }

@@ -1,5 +1,5 @@
 import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
-import { Alteration } from './alteration';
+import { Alteration, IAlteration } from './alteration';
 
 export class Attributes {
   @Expose({ name: 'Alteration' })
@@ -12,7 +12,11 @@ export class Attributes {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IAttributes {
+    return <IAttributes>classToPlain(this);
   }
+}
+
+export interface IAttributes {
+  Alteration: IAlteration;
 }

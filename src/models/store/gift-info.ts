@@ -12,7 +12,14 @@ export class GiftInfo {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IGiftInfo {
+    return <IGiftInfo>classToPlain(this);
   }
+}
+
+export interface IGiftInfo {
+  bIsEnabled: boolean;
+  forcedGiftBoxTemplateId: string;
+  purchaseRequirements: string[];
+  giftRecordIds?: string[];
 }

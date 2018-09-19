@@ -11,8 +11,8 @@ export class Requirement {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IRequirement {
+    return <IRequirement>classToPlain(this);
   }
 }
 
@@ -21,4 +21,10 @@ export enum RequirementType {
   DenyOnItemOwnership = 'DenyOnItemOwnership',
   RequireFulfillment = 'RequireFulfillment',
   RequireItemOwnership = 'RequireItemOwnership'
+}
+
+export interface IRequirement {
+  requirementType: RequirementType;
+  requiredId: string;
+  minQuantity: number;
 }

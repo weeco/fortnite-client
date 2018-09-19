@@ -1,5 +1,5 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { StatsItem } from './stats-item';
+import { IStatsItem, StatsItem } from './stats-item';
 
 export class PlayerStats {
   @Type(() => StatsItem)
@@ -10,11 +10,11 @@ export class PlayerStats {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IStatsItem[] {
+    return <IStatsItem[]>classToPlain(this);
   }
 }
 
-export interface IPlayerStats {
-  stats: {}[];
+export interface IPlayerStatsPrepared {
+  stats: IStatsItem[];
 }

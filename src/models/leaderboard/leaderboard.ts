@@ -14,7 +14,12 @@ export class Leaderboard {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ILeaderboard {
+    return <ILeaderboard>classToPlain(this);
   }
+}
+
+export interface ILeaderboard {
+  statName: string;
+  statWindow: TimeWindow;
 }

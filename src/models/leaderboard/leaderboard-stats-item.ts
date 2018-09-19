@@ -9,7 +9,13 @@ export class LeaderboardStatsItem {
     return plainToClass(LeaderboardStatsItem, jsonObject);
   }
 
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ILeaderboardStatsItem {
+    return <ILeaderboardStatsItem>classToPlain(this);
   }
+}
+
+export interface ILeaderboardStatsItem {
+  accountId: string;
+  value: number;
+  rank: number;
 }

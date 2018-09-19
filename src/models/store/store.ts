@@ -1,5 +1,5 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { Storefront } from './storefront';
+import { IStoreFront, Storefront } from './storefront';
 
 export class Store {
   public refreshIntervalHrs: number;
@@ -17,4 +17,11 @@ export class Store {
   public toJson(): {} {
     return classToPlain(this);
   }
+}
+
+export interface IStore {
+  refreshIntervalHrs: number;
+  dailyPurchaseHrs: number;
+  expiration: string;
+  storefronts: IStoreFront[];
 }

@@ -13,7 +13,12 @@ export class Alteration {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IAlteration {
+    return <IAlteration>classToPlain(this);
   }
+}
+
+export interface IAlteration {
+  LootTierGroup: string;
+  Tier: number;
 }

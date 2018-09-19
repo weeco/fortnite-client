@@ -1,5 +1,5 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { Attributes } from './attributes';
+import { Attributes, IAttributes } from './attributes';
 
 export class ItemGrant {
   public templateId: string;
@@ -14,7 +14,13 @@ export class ItemGrant {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IItemGrant {
+    return <IItemGrant>classToPlain(this);
   }
+}
+
+export interface IItemGrant {
+  templateId: string;
+  quantity: number;
+  attributes?: IAttributes;
 }

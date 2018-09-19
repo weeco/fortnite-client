@@ -1,6 +1,6 @@
 import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
-import { Loginmessage } from './loginmessage';
-import { News } from './news';
+import { ILoginmessage, Loginmessage } from './loginmessage';
+import { INews, News } from './news';
 
 export class Athenamessage {
   @Expose({ name: '_view' })
@@ -33,7 +33,18 @@ export class Athenamessage {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IAthenaMessage {
+    return <IAthenaMessage>classToPlain(this);
   }
+}
+
+export interface IAthenaMessage {
+  _view: string;
+  _activeDate: string;
+  _locale: string;
+  _title: string;
+  lastModified: string;
+  expiresAt?: string;
+  overrideablemessage?: ILoginmessage;
+  news?: INews;
 }

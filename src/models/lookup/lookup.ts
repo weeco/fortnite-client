@@ -9,7 +9,12 @@ export class Lookup {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ILookup {
+    return <ILookup>classToPlain(this);
   }
+}
+
+export interface ILookup {
+  id: string;
+  displayName: string;
 }

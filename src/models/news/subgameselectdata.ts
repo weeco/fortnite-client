@@ -1,5 +1,5 @@
 import { classToPlain, Expose, plainToClass, Type } from 'class-transformer';
-import { Loginmessage } from './loginmessage';
+import { ILoginmessage, Loginmessage } from './loginmessage';
 
 export class Subgameselectdata {
   @Expose({ name: '_view' })
@@ -34,7 +34,19 @@ export class Subgameselectdata {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ISubgameselectdata {
+    return <ISubgameselectdata>classToPlain(this);
   }
+}
+
+export interface ISubgameselectdata {
+  _view: string;
+  _activeDate: string;
+  _locale: string;
+  _title: string;
+  saveTheWorldUnowned: ILoginmessage;
+  lastModified: string;
+  expiresAt: string;
+  battleRoyale: ILoginmessage;
+  saveTheWorld: ILoginmessage;
 }

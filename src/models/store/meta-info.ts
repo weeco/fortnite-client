@@ -9,8 +9,8 @@ export class MetaInfo {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IMetaInfo {
+    return <IMetaInfo>classToPlain(this);
   }
 }
 
@@ -25,4 +25,9 @@ export enum Key {
   PurchaseLimitingEventID = 'PurchaseLimitingEventId',
   RequiredTag = 'RequiredTag',
   SharedDisplayPriority = 'SharedDisplayPriority'
+}
+
+export interface IMetaInfo {
+  key: Key;
+  value: string;
 }

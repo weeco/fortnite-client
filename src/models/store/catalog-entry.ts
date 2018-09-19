@@ -1,10 +1,10 @@
 import { classToPlain, plainToClass, Type } from 'class-transformer';
-import { GiftInfo } from './gift-info';
-import { ItemGrant } from './item-grant';
-import { MetaAssetInfo } from './meta-asset-info';
-import { MetaInfo } from './meta-info';
-import { Price } from './price';
-import { Requirement } from './requirement';
+import { GiftInfo, IGiftInfo } from './gift-info';
+import { IItemGrant, ItemGrant } from './item-grant';
+import { IMetaAssetInfo, MetaAssetInfo } from './meta-asset-info';
+import { IMetaInfo, MetaInfo } from './meta-info';
+import { IPrice, Price } from './price';
+import { IRequirement, Requirement } from './requirement';
 
 export class CatalogEntry {
   public offerId: string;
@@ -50,8 +50,8 @@ export class CatalogEntry {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): ICatalogEntry {
+    return <ICatalogEntry>classToPlain(this);
   }
 }
 
@@ -61,4 +61,32 @@ export enum CatalogGroup {
 
 export enum OfferType {
   StaticPrice = 'StaticPrice'
+}
+
+export interface ICatalogEntry {
+  offerId: string;
+  devName: string;
+  offerType: OfferType;
+  prices: IPrice[];
+  categories: string[];
+  dailyLimit: number;
+  weeklyLimit: number;
+  monthlyLimit: number;
+  appStoreId: string[];
+  requirements: IRequirement[];
+  metaInfo?: IMetaInfo[];
+  catalogGroup?: CatalogGroup;
+  catalogGroupPriority: number;
+  sortPriority: number;
+  title?: string;
+  shortDescription?: string;
+  description?: string;
+  displayAssetPath?: string;
+  itemGrants: IItemGrant[];
+  giftInfo?: IGiftInfo;
+  metaAssetInfo?: IMetaAssetInfo;
+  fulfillmentIds?: string[];
+  matchFilter?: CatalogGroup;
+  filterWeight?: number;
+  refundable?: boolean;
 }

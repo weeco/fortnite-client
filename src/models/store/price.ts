@@ -15,8 +15,8 @@ export class Price {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IPrice {
+    return <IPrice>classToPlain(this);
   }
 }
 
@@ -24,4 +24,14 @@ export enum CurrencyType {
   GameItem = 'GameItem',
   MtxCurrency = 'MtxCurrency',
   RealMoney = 'RealMoney'
+}
+
+export interface IPrice {
+  currencyType: CurrencyType;
+  currencySubType: string;
+  regularPrice: number;
+  finalPrice: number;
+  saleExpiration: string;
+  basePrice: number;
+  saleType?: string;
 }

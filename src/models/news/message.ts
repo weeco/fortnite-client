@@ -13,11 +13,19 @@ export class Message {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IMessage {
+    return <IMessage>classToPlain(this);
   }
 }
 
 export enum MessageType {
   CommonUISimpleMessageBase = 'CommonUI Simple Message Base'
+}
+
+export interface IMessage {
+  image?: string;
+  hidden?: boolean;
+  title: string;
+  body: string;
+  messagetype?: MessageType;
 }

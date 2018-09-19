@@ -13,7 +13,16 @@ export class BuildInformation {
   }
 
   /* istanbul ignore next */
-  public toJson(): {} {
-    return classToPlain(this);
+  public toJson(): IBuildInformation {
+    return <IBuildInformation>classToPlain(this);
   }
+}
+
+export interface IBuildInformation {
+  appName: string;
+  labelName: string;
+  buildVersion: string;
+  catalogItemId: string;
+  namespace: string;
+  assetId: string;
 }

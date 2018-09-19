@@ -22,3 +22,13 @@ export class Status {
     return classToPlain(this);
   }
 }
+
+export interface IStatus {
+  serviceInstanceId: string;
+  status: string;
+  message: number;
+  maintenanceUri?: string;
+  overrideCatalogIds: string[];
+  allowedActions: string[];
+  banned: boolean;
+}
