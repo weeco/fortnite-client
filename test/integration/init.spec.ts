@@ -1,7 +1,4 @@
-import { config } from 'dotenv';
 import { FortniteClient, IFortniteClientCredentials, IProxyOptions, LauncherClient } from '../../src';
-
-config();
 
 // Parse Proxy configuration
 let proxy: IProxyOptions = null;

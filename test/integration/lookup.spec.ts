@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { Lookup } from '../../src/index';
+import { ILookup } from '../../src';
 import { api } from './init.spec';
 
 describe('Lookup method', () => {
@@ -10,9 +10,19 @@ describe('Lookup method', () => {
 
   // tslint:disable-next-line:mocha-no-side-effect-code
   it("should return skynewz's id and displayname", async () => {
-    const r: Lookup = await api.lookup('skynewz');
+    const r: ILookup = await api.lookup('SkYNewZ');
     expect(r).to.be.an('object');
     expect(r.id).to.be.equal('8b057df0e63744f38962f3c7635674b4');
     expect(r.displayName).to.be.equal('SkYNewZ');
+  }).timeout(6 * 1000);
+
+  // tslint:disable-next-line:mocha-no-side-effect-code
+  it('should return lookups by ids for pongau and skynewz', async () => {
+    const r: Map<string, ILookup> = await api.lookupByIds([
+      '8b057df0e63744f38962f3c7635674b4',
+      '2ec67dfe5ac4448cb2d82d5039b196b4'
+    ]);
+    expect(r).to.be.a('map');
+    expect(r.size).to.be.eq(2);
   }).timeout(6 * 1000);
 });

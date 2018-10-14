@@ -1,12 +1,12 @@
 import * as cheerio from 'cheerio';
-import { RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
+import { Cookie, CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
 import { LoginToken } from './enums/static-token.enum';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { IAccessToken } from './interfaces/fortnite-types/access-token.interface';
+import { IBuildInformation } from './interfaces/fortnite-types/build-information.interface';
 import { IRequestOAuthTokenConfig } from './interfaces/request-oauth-token.interface';
-import { BuildInformation } from './models/build-information/build-information';
-import { AccessToken } from './models/login/access-token';
 import { LauncherUrlHelper } from './utils/launcher-url-helper';
 
 /**
@@ -16,8 +16,10 @@ export class LauncherClient {
   private apiRequest: RequestAPI<request.RequestPromise, request.RequestPromiseOptions, RequiredUriUrl>;
   private credentials: IFortniteClientCredentials;
   private readonly clientId: string = '24a1bff3f90749efbfcbc576c626a282';
-  private readonly redirectUri: string = 'https://accounts.launcher-website-prod07.ol.epicgames.com/login' +
-  `/showPleaseWait?client_id=${this.clientId}&rememberEmail=false`;
+  private readonly redirectUri: string =
+    'https://accounts.launcher-website-prod07.ol.epicgames.com/login' +
+    `/showPleaseWait?client_id=${this.clientId}&rememberEmail=false`;
+  private cookie: CookieJar;
 
   /**
    * Creates a new LauncherClient instance.
@@ -25,6 +27,7 @@ export class LauncherClient {
    * @param options Library specific options (such as a response timeout until it throws an exception).
    */
   constructor(credentials: IFortniteClientCredentials, options: IFortniteClientOptions) {
+    this.cookie = request.jar();
     this.apiRequest = request.defaults({
       method: 'GET',
       timeout: options.timeoutMs,
@@ -36,14 +39,14 @@ export class LauncherClient {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache'
       },
-      jar: true,
+      jar: this.cookie,
       gzip: true
     });
 
     this.credentials = credentials;
   }
 
-  public async buildInformation(): Promise<BuildInformation> {
+  public async buildInformation(): Promise<IBuildInformation[]> {
     const targetUrl: string = `${LauncherUrlHelper.publicAssets}/Windows`;
     const queryParams: {} = {
       label: 'Live'
@@ -52,7 +55,7 @@ export class LauncherClient {
       qs: queryParams
     });
 
-    return BuildInformation.FROM_JSON(response.body[0]);
+    return response.body;
   }
 
   public async login(): Promise<void> {
@@ -60,7 +63,7 @@ export class LauncherClient {
     const xsrfDetails: IXsrfInformation = await this.fetchLoginForm();
     await this.doLauncherLogin(xsrfDetails);
     const exchangeCode: string = await this.fetchExchangeCode();
-    const oAuthToken: AccessToken = await this.getOauthToken(exchangeCode);
+    const oAuthToken: IAccessToken = await this.getOauthToken(exchangeCode);
 
     // Insert auth token into default request
     this.updateClientAccessToken(oAuthToken);
@@ -94,7 +97,9 @@ export class LauncherClient {
       qs: queryParams
     });
     const $: CheerioStatic = cheerio.load(response.body);
-    const xsrfToken: string = $('#X-XSRF-TOKEN').val();
+    // @ts-ignore: test
+    const cookies: Cookie[] = this.cookie.getCookies(targetUrl);
+    const xsrfToken: string = cookies.find((x: Cookie) => x.key === 'XSRF-TOKEN').value;
     const xsrfUri: string = $('#X-XSRF-URI').val();
 
     return { xsrfToken, xsrfUri };
@@ -103,8 +108,6 @@ export class LauncherClient {
   private async doLauncherLogin(xsrf: IXsrfInformation): Promise<void> {
     const targetUrl: string = `${LauncherUrlHelper.login}/doLauncherLogin`;
     const queryParams: {} = {
-      'X-XSRF-TOKEN': xsrf.xsrfToken,
-      'X-XSRF-URI': xsrf.xsrfUri,
       fromForm: 'yes',
       authType: '',
       linkExtAuth: '',
@@ -116,7 +119,8 @@ export class LauncherClient {
     await this.apiRequest(targetUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-XSRF-TOKEN': xsrf.xsrfToken
       },
       form: queryParams
     });
@@ -133,7 +137,7 @@ export class LauncherClient {
     return regex.exec(response.body)[1];
   }
 
-  private async getOauthToken(exchangeCode: string): Promise<AccessToken> {
+  private async getOauthToken(exchangeCode: string): Promise<IAccessToken> {
     const requestTokenConfig: IRequestOAuthTokenConfig = {
       grant_type: 'exchange_code',
       exchange_code: exchangeCode,
@@ -151,17 +155,17 @@ export class LauncherClient {
       jar: false
     });
 
-    return AccessToken.FROM_JSON(<{}>oAuthTokenResponse.body);
+    return oAuthTokenResponse.body;
   }
 
   /**
    * Updates the default auth header for client requests and sets the property
    * @param token The new client access token
    */
-  private updateClientAccessToken(token: AccessToken): void {
+  private updateClientAccessToken(token: IAccessToken): void {
     this.apiRequest = this.apiRequest.defaults({
       headers: {
-        Authorization: `bearer ${token.accessToken}`
+        Authorization: `bearer ${token.access_token}`
       }
     });
   }
