@@ -16,6 +16,7 @@ A promise based REST client for querying ingame data (such as stats) against the
 - [x] Written in TypeScript (provides always up to date type definitions
 - [x] Covers all publicly accessible endpoints
 - [x] Integration tests
+- [x] No token capturing or similiar needed, just pass your username/pass into the config
 
 **And coming up on the roadmap...**
 
