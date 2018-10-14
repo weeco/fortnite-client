@@ -18,7 +18,8 @@
         ],
         "cwd": "${workspaceRoot}",
         "protocol": "inspector",
-        "outputCapture": "std"
+        "outputCapture": "std",
+        "envFile": "${workspaceFolder}/.env"
       },
       {
         "name": "All tests",
@@ -34,7 +35,8 @@
         ],
         "cwd": "${workspaceRoot}",
         "protocol": "inspector",
-        "outputCapture": "std"
+        "outputCapture": "std",
+        "envFile": "${workspaceFolder}/.env"
       }
   ]
 }

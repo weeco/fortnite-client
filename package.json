@@ -1,6 +1,6 @@
 {
   "name": "fortnite-client",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "REST client library for receiving ingame data from the Fortnite game servers. Requires a valid Fortnite account.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -50,7 +50,6 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/cheerio": "^0.22.8",
-    "@types/dotenv": "^4.0.3",
     "@types/mocha": "^5.2.3",
     "@types/node": "^10.5.0",
     "@types/request": "^2.47.1",
@@ -58,7 +57,6 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "codecov": "^3.0.2",
-    "dotenv": "^6.0.0",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "prettier": "^1.13.6",

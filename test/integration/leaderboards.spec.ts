@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { GroupType, Leaderboard, LeaderboardStatsItem, LeaderboardType, Platform, TimeWindow } from '../../src/index';
+import { GroupType, ILeaderboardEntry, ILeaderboards, LeaderboardType, Platform, TimeWindow } from '../../src/index';
 import { api } from './init.spec';
 
 describe('Leaderboards method', () => {
@@ -10,7 +10,7 @@ describe('Leaderboards method', () => {
 
   // tslint:disable-next-line:mocha-no-side-effect-code
   it('should return the global wins leaderboards', async () => {
-    const r: Leaderboard = await api.getLeaderboards(
+    const r: ILeaderboards = await api.getLeaderboards(
       LeaderboardType.Wins,
       Platform.PC,
       GroupType.Solo,
@@ -18,40 +18,14 @@ describe('Leaderboards method', () => {
       0,
       100
     );
-    expect(r.statWindow).to.be.a('string');
+    expect(r.statName).to.be.equal('br_placetop1_pc_m0_p2');
+    expect(r.statWindow).to.be.equal('weekly');
     expect(r.entries.length).to.be.equal(100);
-  }).timeout(6 * 1000);
 
-  // tslint:disable-next-line:mocha-no-side-effect-code
-  it('should return the global wins leaderboards with (-de)serialization', async () => {
-    const r: Leaderboard = await api.getLeaderboards(
-      LeaderboardType.Wins,
-      Platform.PC,
-      GroupType.Solo,
-      TimeWindow.Weekly,
-      0,
-      100
-    );
-    const json: {} = r.toJson();
-    expect(json).to.be.an('object');
-    const deserialized: Leaderboard = Leaderboard.FROM_JSON(json);
-    expect(deserialized).to.be.an.instanceof(Leaderboard);
-  }).timeout(6 * 1000);
-
-  // tslint:disable-next-line:mocha-no-side-effect-code
-  it('should return a stats item with (-de)serialization', async () => {
-    const r: Leaderboard = await api.getLeaderboards(
-      LeaderboardType.Wins,
-      Platform.PC,
-      GroupType.Solo,
-      TimeWindow.Weekly,
-      0,
-      100
-    );
-    const item: LeaderboardStatsItem = r.entries[0];
-    const json: {} = item.toJson();
-    expect(json).to.be.an('object');
-    const deserialized: LeaderboardStatsItem = LeaderboardStatsItem.FROM_JSON(json);
-    expect(deserialized).to.be.an.instanceof(LeaderboardStatsItem);
+    const statItem: ILeaderboardEntry = r.entries[0];
+    expect(statItem.accountId).to.be.a('string');
+    expect(statItem.name).to.be.a('string');
+    expect(statItem.value).to.be.a('number');
+    expect(statItem.rank).to.be.a('number');
   }).timeout(6 * 1000);
 });
