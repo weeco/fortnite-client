@@ -143,7 +143,7 @@ export interface IProxyOptions {
 | `static CHECK_STATUS()`                                                                                                                    | Promise\<ICheckStatus[]>       |
 | `static GET_GAME_NEWS()`                                                                                                                   | Promise\<IGameNews>            |
 | `login()`                                                                                                                                  | Promise\<void>                 |
-| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow, convertJSONOutput: boolean=true)`                                        | Promise\<IPlayerStats          | IStatsItem[]> |
+| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow, convertJSONOutput: boolean=true)`                                        | Promise\<IPlayerStats>          | IStatsItem[]> |
 | `getStore(locale: string = 'en-US')`                                                                                                       | Promise\<IStore>               |
 | `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<ILeaderboards>        |
 | `lookup(username: string)`                                                                                                                 | Promise\<ILookup>              |
