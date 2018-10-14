@@ -49,7 +49,6 @@
   "homepage": "https://github.com/weeco/fortnite-client#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/cheerio": "^0.22.8",
     "@types/mocha": "^5.2.3",
     "@types/node": "^10.5.0",
     "@types/request": "^2.47.1",
@@ -68,9 +67,6 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "class-transformer": "^0.1.9",
-    "reflect-metadata": "^0.1.12",
     "request": "^2.87.0",
     "request-promise-native": "^1.0.5"
   },
