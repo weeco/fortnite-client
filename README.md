@@ -16,6 +16,7 @@ A promise based REST client for querying ingame data (such as stats) against the
 - [x] Written in TypeScript (provides always up to date type definitions
 - [x] Covers all publicly accessible endpoints
 - [x] Integration tests
+- [x] No token capturing or similiar needed, just pass your username/pass into the config
 
 **And coming up on the roadmap...**
 
@@ -24,18 +25,21 @@ A promise based REST client for querying ingame data (such as stats) against the
 - [ ] Event for incoming friend messages :inbox_tray:
 
 ## Table of contents
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Basic usage](#basic-usage)
-- [Class FortniteClient](#class-fortniteclient)
-  - [Instantion](#instantion)
-  - [Available endpoints](#available-endpoints)  
-- [Class LauncherClient](#class-launcherclient)
-  - [Instantion](#instantion-1)
-  - [Available endpoints](#available-endpoints-1)  
-- [Contributors](#contributors)  
-- [License](#license)
+- [Fortnite REST Client](#fortnite-rest-client)
+    - [Features](#features)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+    - [Basic usage](#basic-usage)
+  - [Class FortniteClient](#class-fortniteclient)
+    - [Instantion](#instantion)
+    - [Available endpoints](#available-endpoints)
+  - [Class LauncherClient](#class-launcherclient)
+    - [Instantion](#instantion)
+    - [Available endpoints](#available-endpoints)
+  - [Contributors](#contributors)
+  - [License](#license)
 
 ## Getting started
 ### Prerequisites
@@ -134,15 +138,16 @@ export interface IProxyOptions {
 
 ### Available endpoints
 
-| Route                                                                                    | Returns                    |
-|------------------------------------------------------------------------------------------|----------------------------|
-| `static CHECK_STATUS()` | Promise\<Status> |
-| `static GET_GAME_NEWS()` | Promise\<Welcome> |
-| `login()` | Promise\<void> |
-| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow)` | Promise\<PlayerStats> |
-| `getStore(locale: string = 'en-US')` | Promise\<Store> |
-| `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<Leaderboard> |
-| `lookup(username: string)` | Promise\<Lookup> |
+| Route                                                                                                                                      | Returns                        |
+| ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
+| `static CHECK_STATUS()`                                                                                                                    | Promise\<ICheckStatus[]>       |
+| `static GET_GAME_NEWS()`                                                                                                                   | Promise\<IGameNews>            |
+| `login()`                                                                                                                                  | Promise\<void>                 |
+| `getBattleRoyaleStatsById(userId: string, timeWindow: TimeWindow, convertJSONOutput: boolean=true)`                                        | Promise\<IPlayerStats>          | IStatsItem[]> |
+| `getStore(locale: string = 'en-US')`                                                                                                       | Promise\<IStore>               |
+| `getLeaderboards(leaderboardType: LeaderboardType, platform: Platform, groupType: GroupType, timeWindow: TimeWindows, limit: number = 50)` | Promise\<ILeaderboards>        |
+| `lookup(username: string)`                                                                                                                 | Promise\<ILookup>              |
+| `lookupByIds(accountIds: string[])`                                                                                                        | Promise\<Map<string, ILookup>> |
 
 ## Class LauncherClient
 The class LauncherClient offers some of the endpoints (which I considered as useful) made by the Epic Games Launcher.
@@ -152,8 +157,8 @@ When creating an instance of LauncherClient you can pass a couple options which 
 
 ### Available endpoints
 
-| Route                                                                                    | Returns                    |
-|------------------------------------------------------------------------------------------|----------------------------|
+| Route                | Returns                    |
+| -------------------- | -------------------------- |
 | `buildInformation()` | Promise\<BuildInformation> |
 
 ## Contributors

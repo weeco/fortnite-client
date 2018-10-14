@@ -5,19 +5,20 @@ import { LeaderboardType } from './enums/leaderboard-type.enum';
 import { Platform } from './enums/platform.enum';
 import { LoginToken } from './enums/static-token.enum';
 import { TimeWindow } from './enums/time-window.enum';
+import { IPlayerStats } from './interfaces/converted-fortnite-types/converted-stats-item.interface';
 import { IFortniteClientCredentials } from './interfaces/fortnite-client-credentials.interface';
 import { IFortniteClientOptions } from './interfaces/fortnite-client-options.interface';
+import { IAccessToken } from './interfaces/fortnite-types/access-token.interface';
+import { ICheckStatus } from './interfaces/fortnite-types/check-status.interface';
+import { IGameNews } from './interfaces/fortnite-types/game-news.interface';
+import { ILeaderboardEntry, ILeaderboards } from './interfaces/fortnite-types/leaderboards.interface';
+import { ILookup } from './interfaces/fortnite-types/lookup.interface';
+import { IOAuthExchange } from './interfaces/fortnite-types/oauth-exchange.interface';
+import { IStatsItem } from './interfaces/fortnite-types/stats-item.interface';
+import { IStore } from './interfaces/fortnite-types/store.interface';
 import { IRequestOAuthTokenConfig } from './interfaces/request-oauth-token.interface';
-import { Leaderboard } from './models/leaderboard/leaderboard';
-import { AccessToken } from './models/login/access-token';
-import { OAuthExchange } from './models/login/oauth-exchange';
-import { Lookup } from './models/lookup/lookup';
-import { Welcome } from './models/news/welcome';
-import { IPlayerStatsPrepared, PlayerStats } from './models/stats/player-stats';
-import { IStatsItem } from './models/stats/stats-item';
-import { Status } from './models/status/status';
-import { Store } from './models/store/store';
 import { FortniteURLHelper } from './utils/fortnite-url-helper';
+import { JSONConvert } from './utils/json-converter';
 
 /**
  * Fortnite client
@@ -25,8 +26,8 @@ import { FortniteURLHelper } from './utils/fortnite-url-helper';
 export class FortniteClient {
   private apiRequest: RequestAPI<request.RequestPromise, request.RequestPromiseOptions, RequiredUriUrl>;
   private credentials: IFortniteClientCredentials;
-  private launcherAccessToken: AccessToken;
-  private clientAccessToken: AccessToken;
+  private launcherAccessToken: IAccessToken;
+  private clientAccessToken: IAccessToken;
 
   /**
    * Creates a new fortnite client instance.
@@ -55,19 +56,18 @@ export class FortniteClient {
     this.credentials = credentials;
   }
 
-  public static async CHECK_STATUS(): Promise<Status> {
+  public static async CHECK_STATUS(): Promise<ICheckStatus[]> {
     const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.serviceStatus,
       timeout: 5 * 1000,
       json: true,
       resolveWithFullResponse: true
     });
-    const statusResponseBody: {}[] = <{}[]>statusResponse.body;
 
-    return Status.FROM_JSON(statusResponseBody[0]);
+    return statusResponse.body;
   }
 
-  public static async GET_GAME_NEWS(locale: string = 'en-US'): Promise<Welcome> {
+  public static async GET_GAME_NEWS(locale: string = 'en-US'): Promise<IGameNews> {
     const statusResponse: RequestResponse = <RequestResponse>await request.get({
       url: FortniteURLHelper.gameNews,
       timeout: 5 * 1000,
@@ -79,7 +79,7 @@ export class FortniteClient {
       }
     });
 
-    return Welcome.FROM_JSON(<{}>statusResponse.body);
+    return statusResponse.body;
   }
 
   public async login(): Promise<void> {
@@ -87,33 +87,45 @@ export class FortniteClient {
     /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.launcherAccessToken, LoginToken.Launcher),
-      this.launcherAccessToken.expiresIn * 1000 - 15 * 1000
+      this.launcherAccessToken.expires_in * 1000 - 15 * 1000
     );
 
-    const oAuthExchange: OAuthExchange = await this.requestOAuthExchange(this.launcherAccessToken);
-    const clientAccessToken: AccessToken = await this.requestOAuthToken(oAuthExchange.code);
+    const oAuthExchange: IOAuthExchange = await this.requestOAuthExchange(this.launcherAccessToken);
+    const clientAccessToken: IAccessToken = await this.requestOAuthToken(oAuthExchange.code);
     this.updateClientAccessToken(clientAccessToken);
     /* istanbul ignore next */
     setTimeout(
       async () => this.onTokenExpired(this.clientAccessToken, LoginToken.Fortnite),
-      this.clientAccessToken.expiresIn * 1000 - 15 * 1000
+      this.clientAccessToken.expires_in * 1000 - 15 * 1000
     );
     await this.killOtherSessions();
   }
 
   public async getBattleRoyaleStatsById(
     userId: string,
-    timeWindow: TimeWindow = TimeWindow.Alltime
-  ): Promise<PlayerStats> {
+    timeWindow?: TimeWindow,
+    convertJSONOutput?: true
+  ): Promise<IPlayerStats>;
+  public async getBattleRoyaleStatsById(
+    userId: string,
+    timeWindow?: TimeWindow,
+    convertJSONOutput?: false
+  ): Promise<IStatsItem[]>;
+  public async getBattleRoyaleStatsById(
+    userId: string,
+    timeWindow: TimeWindow = TimeWindow.Alltime,
+    convertJSONOutput: boolean = true
+  ): Promise<IPlayerStats | IStatsItem[]> {
     const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId, timeWindow)
     });
-    const playerStatsBody: IStatsItem[] = <IStatsItem[]>playerStats.body;
-    const preparedObject: IPlayerStatsPrepared = {
-      stats: playerStatsBody
-    };
+    const originalStats: IStatsItem[] = playerStats.body;
 
-    return PlayerStats.FROM_JSON(preparedObject);
+    if (!convertJSONOutput) {
+      return originalStats;
+    }
+
+    return JSONConvert.convertPlayerStats(originalStats);
   }
 
   public async getLeaderboards(
@@ -123,7 +135,7 @@ export class FortniteClient {
     timeWindow: TimeWindow = TimeWindow.Alltime,
     pageNumber: number = 0,
     limit: number = 50
-  ): Promise<Leaderboard> {
+  ): Promise<ILeaderboards> {
     const params: {} = { ownertype: 1, pageNumber, itemsPerPage: limit };
     const leaderboardsResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_LEADERBOARDS_URL(leaderboardType, platform, groupType, timeWindow),
@@ -132,10 +144,20 @@ export class FortniteClient {
       body: []
     });
 
-    return Leaderboard.FROM_JSON(<{}>leaderboardsResponse.body);
+    const response: Partial<ILeaderboards> = leaderboardsResponse.body;
+    // Remove hyphens from all accountIds, so that they can be used for bulkLookup
+    response.entries.forEach((x: ILeaderboardEntry) => {
+      x.accountId = x.accountId.replace(/-/g, '');
+    });
+    const playerIds: string[] = response.entries.map((x: ILeaderboardEntry) => x.accountId);
+
+    const playerNames: Map<string, ILookup> = await this.lookupByIds(playerIds);
+    response.entries.forEach((x: ILeaderboardEntry) => (x.name = playerNames.get(x.accountId).displayName));
+
+    return <ILeaderboards>response;
   }
 
-  public async getStore(locale: string = 'en-US'): Promise<Store> {
+  public async getStore(locale: string = 'en-US'): Promise<IStore> {
     const storeResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.store,
       headers: {
@@ -143,40 +165,66 @@ export class FortniteClient {
       }
     });
 
-    return Store.FROM_JSON(<{}>storeResponse.body);
+    return storeResponse.body;
   }
 
   /**
    * Checks if a player with the given name exists. If it exists, it will return the playerId
    * @param username Full text playername (e. g. 'NinjasHyper')
    */
-  public async lookup(username: string): Promise<Lookup> {
+  public async lookup(username: string): Promise<ILookup> {
     const targetUrl: string = FortniteURLHelper.lookup;
-    const params: {} = { q: username };
+    const params: {} = {
+      q: username
+    };
     const lookupResponse: RequestResponse = <RequestResponse>await this.apiRequest({
       url: targetUrl,
       qs: params
     });
 
-    return Lookup.FROM_JSON(<{}>lookupResponse.body);
+    return lookupResponse.body;
+  }
+
+  /**
+   * Get the player name by accountId in bulk.
+   * Returns a Map with the accountId as key and the lookup object as value
+   * @param accountIds AccountIDs which shall be looked up
+   */
+  public async lookupByIds(accountIds: string[]): Promise<Map<string, ILookup>> {
+    // Map by accountId
+    const lookupMap: Map<string, ILookup> = new Map();
+
+    const targetUrl: string = FortniteURLHelper.lookupById;
+    const params: {} = {
+      accountId: accountIds
+    };
+    const response: RequestResponse = <RequestResponse>await this.apiRequest({
+      url: targetUrl,
+      qs: params,
+      qsStringifyOptions: { indices: false }
+    });
+    const lookupResponse: ILookup[] = response.body;
+    lookupResponse.forEach((x: ILookup) => lookupMap.set(x.id, x));
+
+    return lookupMap;
   }
 
   /**
    * Updates the default auth header for client requests and sets the property
    * @param token The new client access token
    */
-  private updateClientAccessToken(token: AccessToken): void {
+  private updateClientAccessToken(token: IAccessToken): void {
     this.clientAccessToken = token;
     this.apiRequest = this.apiRequest.defaults({
       headers: {
-        Authorization: `bearer ${token.accessToken}`
+        Authorization: `bearer ${token.access_token}`
       }
     });
   }
 
   /* istanbul ignore next */
-  private async onTokenExpired(token: AccessToken, secretKey: string): Promise<void> {
-    const refreshedToken: AccessToken = await this.refreshToken(token, secretKey);
+  private async onTokenExpired(token: IAccessToken, secretKey: string): Promise<void> {
+    const refreshedToken: IAccessToken = await this.refreshToken(token, secretKey);
     switch (secretKey) {
       case LoginToken.Fortnite:
         this.updateClientAccessToken(refreshedToken);
@@ -190,7 +238,10 @@ export class FortniteClient {
         throw new Error('Expired token could not be identified by comparing the secret key');
     }
 
-    setTimeout(async () => this.onTokenExpired(refreshedToken, secretKey), refreshedToken.expiresIn * 1000 - 15 * 1000);
+    setTimeout(
+      async () => this.onTokenExpired(refreshedToken, secretKey),
+      refreshedToken.expires_in * 1000 - 15 * 1000
+    );
   }
 
   /**
@@ -205,10 +256,10 @@ export class FortniteClient {
   }
 
   /* istanbul ignore next */
-  private async refreshToken(token: AccessToken, secretKey: string): Promise<AccessToken> {
+  private async refreshToken(token: IAccessToken, secretKey: string): Promise<IAccessToken> {
     const tokenRequestConfig: IRequestRefreshTokenConfig = {
       grant_type: 'refresh_token',
-      refresh_token: token.refreshToken,
+      refresh_token: token.refresh_token,
       includePerms: true
     };
     const refreshTokenResponse: RequestResponse = <RequestResponse>await this.apiRequest({
@@ -220,10 +271,10 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(<{}>refreshTokenResponse.body);
+    return refreshTokenResponse.body;
   }
 
-  private async requestOAuthToken(authCode: string): Promise<AccessToken> {
+  private async requestOAuthToken(authCode: string): Promise<IAccessToken> {
     const requestTokenConfig: IRequestOAuthTokenConfig = {
       grant_type: 'exchange_code',
       exchange_code: authCode,
@@ -239,26 +290,26 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(<{}>oAuthTokenResponse.body);
+    return oAuthTokenResponse.body;
   }
 
-  private async requestOAuthExchange(accessToken: AccessToken): Promise<OAuthExchange> {
+  private async requestOAuthExchange(accessToken: IAccessToken): Promise<IOAuthExchange> {
     const oAuthExchangeResponse: RequestResponse = <RequestResponse>await this.apiRequest(
       FortniteURLHelper.oAuthExchange,
       {
         headers: {
-          Authorization: `bearer ${accessToken.accessToken}`
+          Authorization: `bearer ${accessToken.access_token}`
         }
       }
     );
 
-    return OAuthExchange.FROM_JSON(<{}>oAuthExchangeResponse.body);
+    return oAuthExchangeResponse.body;
   }
 
   /**
    * Request Login Token after (logging in with password)
    */
-  private async requestAccessToken(): Promise<AccessToken> {
+  private async requestAccessToken(): Promise<IAccessToken> {
     const requestTokenConfig: IRequestAccessTokenConfig = {
       grant_type: 'password',
       username: this.credentials.email,
@@ -273,7 +324,7 @@ export class FortniteClient {
       method: 'POST'
     });
 
-    return AccessToken.FROM_JSON(<{}>accessTokenResponse.body);
+    return accessTokenResponse.body;
   }
 }
 
