@@ -31,3 +31,4 @@ yarn.lock
 tsconfig.json
 coverage
 .nyc_output
+git-banner.jpg

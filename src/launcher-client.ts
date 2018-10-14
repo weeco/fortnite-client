@@ -1,4 +1,3 @@
-import * as cheerio from 'cheerio';
 import { Cookie, CookieJar, RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import * as request from 'request-promise-native';
 import { LoginToken } from './enums/static-token.enum';
@@ -60,8 +59,8 @@ export class LauncherClient {
 
   public async login(): Promise<void> {
     await this.fetchRedirectCookies();
-    const xsrfDetails: IXsrfInformation = await this.fetchLoginForm();
-    await this.doLauncherLogin(xsrfDetails);
+    const xsrfToken: string = await this.fetchLoginForm();
+    await this.doLauncherLogin(xsrfToken);
     const exchangeCode: string = await this.fetchExchangeCode();
     const oAuthToken: IAccessToken = await this.getOauthToken(exchangeCode);
 
@@ -86,26 +85,22 @@ export class LauncherClient {
     }
   }
 
-  private async fetchLoginForm(): Promise<IXsrfInformation> {
+  private async fetchLoginForm(): Promise<string> {
     const targetUrl: string = `${LauncherUrlHelper.login}/doLauncherLogin`;
     const queryParams: {} = {
       client_id: this.clientId,
       redirectUrl: this.redirectUri
     };
 
-    const response: RequestResponse = await this.apiRequest(targetUrl, {
+    await this.apiRequest(targetUrl, {
       qs: queryParams
     });
-    const $: CheerioStatic = cheerio.load(response.body);
-    // @ts-ignore: test
     const cookies: Cookie[] = this.cookie.getCookies(targetUrl);
-    const xsrfToken: string = cookies.find((x: Cookie) => x.key === 'XSRF-TOKEN').value;
-    const xsrfUri: string = $('#X-XSRF-URI').val();
 
-    return { xsrfToken, xsrfUri };
+    return cookies.find((x: Cookie) => x.key === 'XSRF-TOKEN').value;
   }
 
-  private async doLauncherLogin(xsrf: IXsrfInformation): Promise<void> {
+  private async doLauncherLogin(xsrf: string): Promise<void> {
     const targetUrl: string = `${LauncherUrlHelper.login}/doLauncherLogin`;
     const queryParams: {} = {
       fromForm: 'yes',
@@ -120,7 +115,7 @@ export class LauncherClient {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-XSRF-TOKEN': xsrf.xsrfToken
+        'X-XSRF-TOKEN': xsrf
       },
       form: queryParams
     });
@@ -169,9 +164,4 @@ export class LauncherClient {
       }
     });
   }
-}
-
-interface IXsrfInformation {
-  xsrfToken: string;
-  xsrfUri: string;
 }
