@@ -4,6 +4,9 @@ import { StatsTypeConverted } from '../../enums/stats-type.enum';
 
 export type CustomProperty = {
   timeWindow: string;
+  stats: {
+    all: IPlayerGroupTypedStats;
+  };
 };
 
 export type IPlayerStatsPlatformEntry = { [K in StatsTypeConverted]: number };

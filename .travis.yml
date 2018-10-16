@@ -5,15 +5,16 @@ branches:
 language: node_js
 
 node_js:
-  - "9.9.0"
-  - "lts/*"
-
-notifications:
-  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
+  - "8"
+  - "9"
+  - "10"
 
 cache:
   directories:
     - node_modules
+
+notifications:
+  slack: devopslille:HcTQJRlD5FHkVG5YWqKYZuzs
 
 install:
   - npm install
