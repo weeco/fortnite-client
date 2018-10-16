@@ -35,4 +35,4 @@ deploy:
     api_key: $NPM_API_KEY
     skip_cleanup: true
     on:
-      node: '9.9.0'
+      node: '10'
