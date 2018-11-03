@@ -13,7 +13,7 @@ export interface IStorefront {
 export interface ICatalogEntry {
   offerId: string;
   devName: string;
-  offerType: IOfferType;
+  offerType: OfferType;
   prices: IPrice[];
   categories: string[];
   dailyLimit: number;
@@ -79,7 +79,7 @@ export interface IMetaInfo {
   value: string;
 }
 
-export enum IOfferType {
+export enum OfferType {
   StaticPrice = 'StaticPrice'
 }
 

@@ -81,7 +81,7 @@ export class LauncherClient {
         qs: queryParams
       });
     } catch (err) {
-      console.error(`Error while fetching redirect cookies in launcher login: ${err}`);
+      // Don't handle catch
     }
   }
 
