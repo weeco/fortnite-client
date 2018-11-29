@@ -119,6 +119,12 @@ export class FortniteClient {
     const playerStats: RequestResponse = <RequestResponse>await this.apiRequest({
       url: FortniteURLHelper.GET_PLAYER_PROFILE_REQUEST_URL(userId, timeWindow)
     });
+
+    // Check if player set privacy to private
+    if (playerStats.statusCode === 204) {
+      throw new Error(`Player with id ${userId} set his leaderboard privacy to private`);
+    }
+
     const originalStats: IStatsItem[] = playerStats.body;
 
     if (!convertJSONOutput) {
