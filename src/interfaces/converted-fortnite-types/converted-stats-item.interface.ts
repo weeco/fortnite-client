@@ -5,10 +5,12 @@ import { StatsTypeConverted } from '../../enums/stats-type.enum';
 export type CustomProperty = {
   timeWindow: string;
   stats: {
-    all: IPlayerGroupTypedStats;
+    allPlatforms: IPlayerGroupTypedStats;
   };
 };
 
 export type IPlayerStatsPlatformEntry = { [K in StatsTypeConverted]: number };
 export type IPlayerStats = { stats: { [K in Platform]?: IPlayerGroupTypedStats } } & CustomProperty;
-export type IPlayerGroupTypedStats = { [K in GroupTypeConverted]?: IPlayerStatsPlatformEntry };
+export type IPlayerGroupTypedStats = { [K in GroupTypeConverted]?: IPlayerStatsPlatformEntry } & {
+  allGroupTypes: IPlayerStatsPlatformEntry;
+};
