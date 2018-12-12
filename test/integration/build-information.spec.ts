@@ -9,7 +9,7 @@ describe('Get Build Information', () => {
   });
 
   // tslint:disable-next-line:mocha-no-side-effect-code
-  it('should return the current build information', async () => {
+  it.skip('should return the current build information', async () => {
     const build: IBuildInformation[] = await launcherApi.buildInformation();
     expect(build).to.be.an('array');
     expect(build[0].appName).to.be.a('string');
